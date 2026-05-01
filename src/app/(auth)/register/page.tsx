@@ -1,18 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { login } from '@/features/auth/services/auth.service';
+import { register } from '@/features/auth/services/auth.service';
 import { useRouter } from 'next/navigation';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
-      await login(email, password);
+      await register(email, password);
       router.push('/');
     } catch (err) {
       console.error(err);
@@ -21,16 +21,15 @@ export default function LoginPage() {
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Register</h1>
       <form onSubmit={(e) => {
         e.preventDefault();
-        handleLogin();
+        handleRegister();
       }}>
         <input onChange={(e) => setEmail(e.target.value)} type="email" placeholder="email" required />
         <input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="password" required />
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
       </form>
-
     </div>
   );
 }
