@@ -1,0 +1,143 @@
+<script lang="ts">
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { Input } from '$lib/components/ui/input/index.js';
+	import { Label } from '$lib/components/ui/label/index.js';
+	import { Spinner } from '$lib/components/ui/spinner/index.js';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Alert from '$lib/components/ui/alert/index.js';
+	import { Store, Mail, Lock, Eye, EyeOff, ArrowRight, CircleAlert } from '@lucide/svelte';
+	import { enhance } from '$app/forms';
+	import { resolve } from '$app/paths';
+
+	let email = $state('');
+	let password = $state('');
+	let showPassword = $state(false);
+	let loading = $state(false);
+
+	let { form } = $props();
+
+	function togglePassword() {
+		showPassword = !showPassword;
+	}
+</script>
+
+<svelte:head>
+	<title>ArfaPOS - Login</title>
+</svelte:head>
+
+<!-- Login Card -->
+<Card.Root class="rounded-2xl border-border/30 bg-card p-6 text-card-foreground shadow-md md:p-8">
+	<Card.Header class="flex flex-col items-center pb-6">
+		<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+			<Store class="h-8 w-8 text-primary" />
+		</div>
+		<Card.Title class="text-center text-headline-md font-bold tracking-tight"
+			>Selamat Datang</Card.Title
+		>
+		<Card.Description class="mt-1 text-center text-body-sm text-muted-foreground"
+			>Masuk ke akun kasir ArfaPOS Anda</Card.Description
+		>
+	</Card.Header>
+
+	<Card.Content>
+		<form
+			method="POST"
+			action="?/login"
+			use:enhance={() => {
+				loading = true;
+				return async ({ update }) => {
+					await update();
+					loading = false;
+				};
+			}}
+			class="space-y-6"
+		>
+			<!-- Email Input -->
+			<div class="space-y-2">
+				<Label class="px-1 text-label-caps text-muted-foreground" for="email">EMAIL</Label>
+				<div class="group relative">
+					<Mail
+						class="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
+					/>
+					<Input
+						class="h-12 w-full rounded-xl border-transparent bg-secondary/10 pr-4 pl-11 text-body-md transition-all placeholder:text-muted-foreground focus-visible:border-primary-light focus-visible:ring-0"
+						id="email"
+						name="email"
+						type="email"
+						placeholder="nama@toko.com"
+						bind:value={email}
+						required
+					/>
+				</div>
+			</div>
+
+			<!-- Password Input -->
+			<div class="space-y-2">
+				<div class="flex items-end justify-between px-1">
+					<Label class="text-label-caps text-muted-foreground" for="password">PASSWORD</Label>
+				</div>
+				<div class="group relative">
+					<Lock
+						class="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
+					/>
+					<Input
+						class="h-12 w-full rounded-xl border-transparent bg-secondary/10 pr-11 pl-11 text-body-md transition-all placeholder:text-muted-foreground focus-visible:border-primary-light focus-visible:ring-0"
+						id="password"
+						name="password"
+						type={showPassword ? 'text' : 'password'}
+						placeholder="••••••••"
+						bind:value={password}
+						required
+					/>
+					<button
+						class="absolute top-1/2 right-3.5 -translate-y-1/2 cursor-pointer text-muted-foreground transition-colors hover:text-foreground"
+						onclick={togglePassword}
+						type="button"
+					>
+						{#if showPassword}
+							<EyeOff class="size-5" />
+						{:else}
+							<Eye class="size-5" />
+						{/if}
+					</button>
+				</div>
+			</div>
+
+			<!-- Error Message -->
+			{#if form?.message}
+				<Alert.Root variant="destructive">
+					<CircleAlert />
+					<Alert.Title>Ups!</Alert.Title>
+					<Alert.Description>
+						{form.message}
+					</Alert.Description>
+				</Alert.Root>
+			{/if}
+
+			<!-- Login Button -->
+			<Button
+				class="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary text-body-md font-semibold text-white shadow-sm transition-all hover:bg-primary-dark active:scale-[0.98]"
+				type="submit"
+				disabled={loading}
+			>
+				{#if loading}
+					<Spinner />
+					Memproses...
+				{:else}
+					Masuk
+					<ArrowRight class="ml-1 size-5" />
+				{/if}
+			</Button>
+		</form>
+	</Card.Content>
+
+	<Card.Footer class="mt-6 flex flex-col items-center border-t border-border/20 pt-6 pb-0">
+		<p class="text-center text-body-sm font-body-sm text-muted-foreground">
+			Belum punya akun ArfaPOS?
+			<a
+				class="ml-1 font-label-bold font-semibold text-primary hover:underline"
+				href={resolve('/register')}>Daftar Sekarang</a
+			>
+		</p>
+	</Card.Footer>
+</Card.Root>
