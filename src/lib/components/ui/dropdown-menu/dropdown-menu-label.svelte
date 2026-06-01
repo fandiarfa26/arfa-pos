@@ -5,16 +5,20 @@
 	let {
 		ref = $bindable(null),
 		class: className,
+		inset,
 		children,
 		...restProps
-	}: WithElementRef<HTMLAttributes<HTMLDivElement>> = $props();
+	}: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
+		inset?: boolean;
+	} = $props();
 </script>
 
 <div
 	bind:this={ref}
-	data-slot="card-footer"
+	data-slot="dropdown-menu-label"
+	data-inset={inset}
 	class={cn(
-		'flex items-center rounded-b-xl px-6 group-data-[size=sm]/card:px-4 [.border-t]:pt-6 group-data-[size=sm]/card:[.border-t]:pt-4',
+		'px-2 py-1.5 text-xs font-medium text-muted-foreground data-inset:pl-8 data-[inset]:pl-8',
 		className
 	)}
 	{...restProps}

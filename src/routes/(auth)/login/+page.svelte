@@ -22,7 +22,7 @@
 </script>
 
 <svelte:head>
-	<title>ArfaPOS - Login</title>
+	<title>Login - ArfaPOS</title>
 </svelte:head>
 
 <!-- Login Card -->

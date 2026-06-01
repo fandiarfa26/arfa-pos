@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-	<title>ArfaPOS - Register</title>
+	<title>Register - ArfaPOS</title>
 </svelte:head>
 
 <!-- Register Card -->
