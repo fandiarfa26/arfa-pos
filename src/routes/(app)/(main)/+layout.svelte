@@ -4,6 +4,8 @@
 	const { children } = $props();
 </script>
 
-{@render children()}
+<div class="pb-16">
+	{@render children()}
+</div>
 
 <BottomNav />

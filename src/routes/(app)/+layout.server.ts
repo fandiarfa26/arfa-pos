@@ -6,6 +6,6 @@ export async function load({ locals }) {
 	}
 
 	return {
-		user: locals.session.user
+		user: locals.user
 	};
 }

@@ -1,5 +1,11 @@
+<script>
+	import ProductList from '../../../../features/products/components/product-list.svelte';
+
+	const { data } = $props();
+</script>
+
 <svelte:head>
 	<title>Products - ArfaPOS</title>
 </svelte:head>
 
-<h1>products</h1>
+<ProductList products={data.products} search={data.search} />

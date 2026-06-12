@@ -1,0 +1,57 @@
+import { fail } from '@sveltejs/kit';
+import { productSchema } from '../../../../features/products/schemas/product-schema.js';
+import z from 'zod';
+import { generateSku } from '$lib/utils/generate-sku.js';
+
+export const actions = {
+	createProduct: async ({ request, locals }) => {
+		const formData = await request.formData();
+
+		const result = productSchema.safeParse({
+			name: formData.get('name'),
+			category: formData.get('category'),
+			price: formData.get('price'),
+			stock: formData.get('stock')
+		});
+
+		if (!result.success) {
+			const tree = z.treeifyError(result.error);
+			return fail(400, {
+				message: 'Periksa kembali data yang Anda masukkan',
+				fieldErrors: {
+					name: tree.properties?.name?.errors?.[0],
+					price: tree.properties?.price?.errors?.[0]
+				}
+			});
+		}
+
+		const nameValue = formData.get('name') as string;
+		const priceValue = formData.get('price');
+		const stockValue = formData.get('stock');
+
+		const parsedPrice = Number(priceValue);
+		const parsedStock = stockValue ? Number(stockValue) : null;
+
+		const sku = generateSku(nameValue);
+
+		const { error } = await locals.supabase.from('products').insert({
+			user_id: locals.user?.id,
+			name: nameValue,
+			category: formData.get('category'),
+			price: parsedPrice,
+			stock: parsedStock,
+			sku
+		});
+
+		if (error) {
+			return fail(500, {
+				message: 'Gagal menyimpan produk',
+				detail: error.message
+			});
+		}
+
+		return {
+			message: 'Produk berhasil ditambahkan'
+		};
+	}
+};

@@ -6,8 +6,8 @@
 </script>
 
 <PageContainer>
-	<AppHeader name={data.user.user_metadata.name} />
-	<div class="p-4">
+	<AppHeader name={data.user?.user_metadata.name} />
+	<main class="p-4">
 		{@render children()}
-	</div>
+	</main>
 </PageContainer>

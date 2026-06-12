@@ -7,4 +7,4 @@
 	<title>Dashboard - ArfaPOS</title>
 </svelte:head>
 
-<h1 class="text-2xl font-bold">Selamat datang di {data.user.user_metadata.name}</h1>
+<h1 class="text-2xl font-bold">Selamat datang di {data.user?.user_metadata.name}</h1>
