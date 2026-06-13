@@ -25,7 +25,7 @@
 	<title>Dashboard - ArfaPOS</title>
 </svelte:head>
 
-<div class="space-y-6 px-4 pt-6">
+<div class="space-y-6">
 	<h1 class="text-headline-md">
 		Selamat datang, {data.user?.user_metadata.name ?? 'Kasir'}
 	</h1>

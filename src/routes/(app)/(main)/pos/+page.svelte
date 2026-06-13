@@ -56,7 +56,7 @@
 <!-- ===== SELECT VIEW ===== -->
 {#if view === 'select'}
 	<div class="flex min-h-[calc(100dvh-4rem)] flex-col">
-		<div class="flex-1 overflow-y-auto px-4 pt-4 pb-44">
+		<div class="flex-1 overflow-y-auto pb-44">
 			<div class="space-y-6">
 				<h2 class="text-headline-md">Pilih Produk</h2>
 				<ProductGrid
@@ -90,7 +90,7 @@
 	<!-- ===== CART VIEW ===== -->
 {:else if view === 'cart'}
 	<div class="flex min-h-[calc(100dvh-4rem)] flex-col">
-		<div class="flex-1 overflow-y-auto px-4 pt-4 pb-44">
+		<div class="flex-1 overflow-y-auto pb-44">
 			<PageHeader title="Cart" onclick={() => (view = 'select')} class="mb-4" />
 			<CartList items={cart.items} onupdateqty={cart.updateQty} onremove={cart.removeItem} />
 		</div>
@@ -129,7 +129,7 @@
 		<input type="hidden" name="amountPaid" value={amountPaid} />
 
 		<div class="flex min-h-[calc(100dvh-4rem)] flex-col">
-			<div class="flex-1 overflow-y-auto px-4 pt-4 pb-44">
+			<div class="flex-1 overflow-y-auto pb-44">
 				<PageHeader title="Pembayaran" onclick={() => (view = 'cart')} class="mb-4" />
 
 				<div class="space-y-6">

@@ -14,35 +14,33 @@
 	const { product }: Props = $props();
 </script>
 
-<Card.Root>
-	<Card.Content class="space-y-2">
-		<div class="flex flex-col items-start justify-between gap-2 md:flex-row md:items-center">
-			<!-- name -->
-			<span class="text-lg font-semibold">{product.name}</span>
-			<!-- price -->
-			<span class="text-lg font-medium text-primary">{formatCurrency(product.price)}</span>
+<Card.Root size="sm" class="gap-0">
+	<Card.Content class="space-y-1 pb-0">
+		<div class="flex items-start justify-between gap-2">
+			<span class="text-sm font-semibold">{product.name}</span>
+			<span class="shrink-0 text-sm font-medium text-primary">{formatCurrency(product.price)}</span>
 		</div>
 		{#if product.category || product.stock}
-			<div class="flex items-center gap-2">
+			<div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
 				{#if product.category}
-					<div><span class="text-gray-600">Kategori: </span> {product.category}</div>
+					<span>Kategori: {product.category}</span>
 				{/if}
 				{#if product.stock}
-					<div><span class="text-gray-600">Stok: </span> {product.stock}</div>
+					<span>Stok: {product.stock}</span>
 				{/if}
 			</div>
 		{/if}
 	</Card.Content>
-	<Card.Footer>
-		<div class="flex w-full items-center justify-end gap-2 border-t pt-2">
+	<Card.Footer class="pt-0">
+		<div class="flex w-full items-center justify-end gap-1">
 			<a href={resolve(`/products/${product.sku}`)}>
-				<Button variant="ghost" size="sm" class="text-primary">
-					<PencilIcon /> Ubah
+				<Button variant="ghost" size="sm" class="text-primary h-7 px-2">
+					<PencilIcon class="size-3.5" /> Ubah
 				</Button>
 			</a>
 			<ProductDeleteDialog productId={product.id}>
-				<Button variant="ghost" size="sm" class="text-semantic-danger">
-					<TrashIcon /> Hapus
+				<Button variant="ghost" size="sm" class="text-semantic-danger h-7 px-2">
+					<TrashIcon class="size-3.5" /> Hapus
 				</Button>
 			</ProductDeleteDialog>
 		</div>
