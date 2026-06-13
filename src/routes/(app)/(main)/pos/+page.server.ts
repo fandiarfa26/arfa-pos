@@ -52,7 +52,7 @@ export const actions = {
 
 		const { data: transaction, error: txError } = await locals.supabase
 			.from('transactions')
-			.insert({ total, user_id: locals.user?.id })
+			.insert({ total, amount_paid: validatedAmount, user_id: locals.user?.id })
 			.select()
 			.single();
 
@@ -72,9 +72,7 @@ export const actions = {
 			subtotal: i.price * i.qty
 		}));
 
-		const { error: itemsError } = await locals.supabase
-			.from('transaction_items')
-			.insert(txItems);
+		const { error: itemsError } = await locals.supabase.from('transaction_items').insert(txItems);
 
 		if (itemsError) {
 			return fail(500, {

@@ -8,17 +8,17 @@
 
 ## Commands
 
-| Command | Purpose |
-|---------|---------|
-| `pnpm dev` | Vite dev server |
-| `pnpm build` | Production build |
-| `pnpm check` | `svelte-kit sync && svelte-check` (typecheck) |
-| `pnpm lint` | Prettier check + ESLint |
-| `pnpm format` | Prettier write |
-| `pnpm test:unit` | Vitest (watch mode) |
-| `pnpm test` | `vitest --run` (CI-style) |
-| `pnpm storybook` | Storybook dev on port 6006 |
-| `pnpm build-storybook` | Static Storybook build |
+| Command                | Purpose                                       |
+| ---------------------- | --------------------------------------------- |
+| `pnpm dev`             | Vite dev server                               |
+| `pnpm build`           | Production build                              |
+| `pnpm check`           | `svelte-kit sync && svelte-check` (typecheck) |
+| `pnpm lint`            | Prettier check + ESLint                       |
+| `pnpm format`          | Prettier write                                |
+| `pnpm test:unit`       | Vitest (watch mode)                           |
+| `pnpm test`            | `vitest --run` (CI-style)                     |
+| `pnpm storybook`       | Storybook dev on port 6006                    |
+| `pnpm build-storybook` | Static Storybook build                        |
 
 Run `pnpm format` consistently — Prettier uses **tabs, single quotes, no trailing commas, 100 print width**. The formatter runs on Svelte files with `prettier-plugin-svelte` and sorts Tailwind classes via `prettier-plugin-tailwindcss`.
 

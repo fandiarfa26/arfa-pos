@@ -142,7 +142,7 @@
 					<!-- Amount Paid Display + Keypad -->
 					<div class="space-y-4">
 						<div class="text-center">
-							<p class="text-label-caps text-muted-foreground mb-1">JUMLAH BAYAR</p>
+							<p class="mb-1 text-label-caps text-muted-foreground">JUMLAH BAYAR</p>
 							<p class="text-price-display text-foreground">
 								{amountPaid > 0 ? formatCurrency(amountPaid) : 'Rp 0'}
 							</p>

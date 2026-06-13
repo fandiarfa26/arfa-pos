@@ -3,7 +3,7 @@ import type { Transaction } from '$features/transactions/types/transaction';
 export async function load({ locals }) {
 	const { data, error } = await locals.supabase
 		.from('transactions')
-		.select('id, total, created_at')
+		.select('id, total, amount_paid, created_at')
 		.order('created_at', { ascending: false });
 
 	if (error) {
@@ -13,6 +13,7 @@ export async function load({ locals }) {
 	const transactions: Transaction[] = (data ?? []).map((tx) => ({
 		id: tx.id,
 		total: tx.total,
+		amount_paid: tx.amount_paid,
 		created_at: tx.created_at
 	}));
 

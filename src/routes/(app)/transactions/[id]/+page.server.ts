@@ -15,6 +15,7 @@ export async function load({ locals, params }) {
 	const transaction: Transaction = {
 		id: data.id,
 		total: data.total,
+		amount_paid: data.amount_paid,
 		created_at: data.created_at
 	};
 

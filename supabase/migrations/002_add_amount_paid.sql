@@ -1,0 +1,1 @@
+ALTER TABLE transactions ADD COLUMN amount_paid BIGINT NOT NULL DEFAULT 0;

@@ -42,8 +42,22 @@
 {/if}
 
 <Card.Root class="mt-4">
-	<Card.Content class="flex items-center justify-between">
-		<p class="font-semibold">Total</p>
-		<p class="text-xl font-bold text-primary">{formatCurrency(transaction.total)}</p>
+	<Card.Content class="space-y-2">
+		<div class="flex items-center justify-between">
+			<p class="font-semibold">Total</p>
+			<p class="text-xl font-bold text-primary">{formatCurrency(transaction.total)}</p>
+		</div>
+		<div class="flex items-center justify-between">
+			<p class="font-semibold">Bayar</p>
+			<p class="text-lg font-medium text-primary">{formatCurrency(transaction.amount_paid)}</p>
+		</div>
+		{#if transaction.amount_paid >= transaction.total}
+			<div class="flex items-center justify-between border-t pt-2">
+				<p class="font-semibold">Kembalian</p>
+				<p class="text-lg font-medium text-green-600">
+					{formatCurrency(transaction.amount_paid - transaction.total)}
+				</p>
+			</div>
+		{/if}
 	</Card.Content>
 </Card.Root>
