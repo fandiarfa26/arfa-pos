@@ -26,12 +26,12 @@
 
 	<!-- Footer Component -->
 	<footer class="bottom-0 flex w-full flex-col items-center gap-4 bg-transparent py-8">
-		<div class="text-headline-md font-headline-md font-bold text-primary">ArfaPOS</div>
+		<!-- <div class="text-headline-md font-headline-md font-bold text-primary">ArfaPOS</div>
 		<div class="flex gap-6 text-body-sm font-body-sm text-muted-foreground">
 			<a class="transition-colors hover:text-primary" href="#privacy">Privacy Policy</a>
 			<a class="transition-colors hover:text-primary" href="#terms">Terms of Service</a>
 			<a class="transition-colors hover:text-primary" href="#help">Help Center</a>
-		</div>
+		</div> -->
 		<p class="text-body-sm font-body-sm text-muted-foreground opacity-80">
 			&copy; 2026 ArfaPOS. Warmth in every transaction.
 		</p>

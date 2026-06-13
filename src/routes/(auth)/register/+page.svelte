@@ -40,7 +40,7 @@
 		>
 	</Card.Header>
 
-	<Card.Content>
+	<Card.Content class="p-0">
 		<form
 			method="POST"
 			action="?/register"
@@ -151,7 +151,7 @@
 		</form>
 	</Card.Content>
 
-	<Card.Footer class="mt-6 flex flex-col items-center border-t border-border/20 pt-6 pb-0">
+	<Card.Footer class="mt-6 flex flex-col items-center border-t border-border/20 pt-6 pb-0 px-0">
 		<p class="text-center text-body-sm font-body-sm text-muted-foreground">
 			Sudah punya akun ArfaPOS?
 			<a
