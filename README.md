@@ -26,16 +26,16 @@
 
 ## Tech stack
 
-| Layer | Technology |
-|---|---|
-| Framework | [SvelteKit 2](https://kit.svelte.dev) + [Svelte 5](https://svelte.dev) (runes mode) |
-| Language | [TypeScript](https://www.typescriptlang.org) |
-| Styling | [Tailwind CSS 4](https://tailwindcss.com) + [shadcn-svelte](https://shadcn-svelte.com) (Vega) |
-| Database & Auth | [Supabase](https://supabase.com) (PostgreSQL + RLS) |
-| Validation | [Zod](https://zod.dev) |
-| Icons | [Lucide](https://lucide.dev) |
-| Testing | [Vitest](https://vitest.dev) + [Playwright](https://playwright.dev) |
-| UI Tooling | [Storybook](https://storybook.js.org), [Prettier](https://prettier.io), [ESLint](https://eslint.org) |
+| Layer           | Technology                                                                                           |
+| --------------- | ---------------------------------------------------------------------------------------------------- |
+| Framework       | [SvelteKit 2](https://kit.svelte.dev) + [Svelte 5](https://svelte.dev) (runes mode)                  |
+| Language        | [TypeScript](https://www.typescriptlang.org)                                                         |
+| Styling         | [Tailwind CSS 4](https://tailwindcss.com) + [shadcn-svelte](https://shadcn-svelte.com) (Vega)        |
+| Database & Auth | [Supabase](https://supabase.com) (PostgreSQL + RLS)                                                  |
+| Validation      | [Zod](https://zod.dev)                                                                               |
+| Icons           | [Lucide](https://lucide.dev)                                                                         |
+| Testing         | [Vitest](https://vitest.dev) + [Playwright](https://playwright.dev)                                  |
+| UI Tooling      | [Storybook](https://storybook.js.org), [Prettier](https://prettier.io), [ESLint](https://eslint.org) |
 
 ## Getting started
 
@@ -110,17 +110,17 @@ src/
 
 ## Commands
 
-| Command | Purpose |
-|---|---|
-| `pnpm dev` | Start Vite dev server |
-| `pnpm build` | Production build |
-| `pnpm check` | Typecheck (`svelte-kit sync` + `svelte-check`) |
-| `pnpm lint` | Prettier check + ESLint |
-| `pnpm format` | Prettier write (auto-format all files) |
-| `pnpm test:unit` | Vitest (watch mode) |
-| `pnpm test` | Vitest run (CI-style) |
-| `pnpm storybook` | Storybook dev server (port 6006) |
-| `pnpm build-storybook` | Static Storybook build |
+| Command                | Purpose                                        |
+| ---------------------- | ---------------------------------------------- |
+| `pnpm dev`             | Start Vite dev server                          |
+| `pnpm build`           | Production build                               |
+| `pnpm check`           | Typecheck (`svelte-kit sync` + `svelte-check`) |
+| `pnpm lint`            | Prettier check + ESLint                        |
+| `pnpm format`          | Prettier write (auto-format all files)         |
+| `pnpm test:unit`       | Vitest (watch mode)                            |
+| `pnpm test`            | Vitest run (CI-style)                          |
+| `pnpm storybook`       | Storybook dev server (port 6006)               |
+| `pnpm build-storybook` | Static Storybook build                         |
 
 ## Architecture
 
