@@ -148,8 +148,8 @@
 }
 @utility text-price-display {
 	font-family: var(--font-price-display);
-	font-size: 28px;
-	line-height: 32px;
+	font-size: 20px;
+	line-height: 24px;
 	letter-spacing: 0.02em;
 	font-weight: 700;
 }
