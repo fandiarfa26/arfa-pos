@@ -1,5 +1,11 @@
+<script lang="ts">
+	import TransactionList from '$features/transactions/components/transaction-list.svelte';
+
+	const { data } = $props();
+</script>
+
 <svelte:head>
-	<title>Transactions - ArfaPOS</title>
+	<title>Riwayat Transaksi - ArfaPOS</title>
 </svelte:head>
 
-<h1>transactions</h1>
+<TransactionList transactions={data.transactions} />
