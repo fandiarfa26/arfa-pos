@@ -2,6 +2,7 @@
 
 ## Prerequisites
 
+- **nvm** — run `nvm use latest` first (pnpm is often unavailable without it)
 - **pnpm** required (`engine-strict=true` in `.npmrc`)
 - `.env` must contain `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - Run `pnpm install && pnpm prepare` before any check or dev command (`prepare` runs `svelte-kit sync`)
