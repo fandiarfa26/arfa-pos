@@ -11,6 +11,9 @@ const dirname =
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
+	server: {
+		allowedHosts: ['squishier-gravity-karaoke.ngrok-free.dev']
+	},
 	test: {
 		expect: {
 			requireAssertions: true
