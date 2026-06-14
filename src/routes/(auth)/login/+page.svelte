@@ -26,7 +26,9 @@
 </svelte:head>
 
 <!-- Login Card -->
-<Card.Root class="rounded-2xl border-border/30 bg-card p-6 text-card-foreground shadow-md md:p-8">
+<Card.Root
+	class="card-enter rounded-2xl border-border/30 bg-card p-6 text-card-foreground shadow-md md:p-8 lg:shadow-lg"
+>
 	<Card.Header class="flex flex-col items-center pb-6">
 		<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
 			<Store class="h-8 w-8 text-primary" aria-hidden="true" />
