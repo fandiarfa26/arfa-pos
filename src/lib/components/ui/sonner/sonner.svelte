@@ -23,10 +23,10 @@
 		<CircleCheckIcon class="size-4 text-semantic-success" />
 	{/snippet}
 	{#snippet errorIcon()}
-		<OctagonXIcon class="size-4 text-red-500" />
+		<OctagonXIcon class="size-4 text-destructive" />
 	{/snippet}
 	{#snippet infoIcon()}
-		<InfoIcon class="size-4 text-blue-500" />
+		<InfoIcon class="size-4 text-tertiary" />
 	{/snippet}
 	{#snippet warningIcon()}
 		<TriangleAlertIcon class="size-4 text-semantic-warning" />

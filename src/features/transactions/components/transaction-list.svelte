@@ -12,8 +12,8 @@
 
 {#if transactions.length === 0}
 	<div class="my-6 flex flex-col items-center justify-center gap-2 p-4">
-		<ReceiptIcon size={48} class="text-primary" />
-		<p class="text-sm text-primary">Belum ada transaksi.</p>
+		<ReceiptIcon size={48} class="text-muted-foreground" />
+		<p class="text-body-sm text-muted-foreground">Belum ada transaksi.</p>
 	</div>
 {:else}
 	<div class="space-y-3">

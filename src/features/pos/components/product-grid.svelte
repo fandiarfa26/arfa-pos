@@ -31,7 +31,11 @@
 </script>
 
 {#if loading}
-	<div class="grid grid-cols-2 gap-3">
+	<div
+		class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4"
+		aria-busy="true"
+		aria-label="Memuat produk"
+	>
 		<div class="h-24 animate-pulse rounded-xl bg-muted"></div>
 		<div class="h-24 animate-pulse rounded-xl bg-muted"></div>
 		<div class="h-24 animate-pulse rounded-xl bg-muted"></div>
@@ -39,7 +43,7 @@
 	</div>
 {:else if products.length === 0}
 	<div class="flex flex-col items-center justify-center gap-2 py-8 text-muted-foreground">
-		<PackageIcon size={40} />
+		<PackageIcon size={40} aria-hidden="true" />
 		<p class="text-body-sm">Belum ada produk</p>
 	</div>
 {:else}
@@ -52,26 +56,34 @@
 			bind:value={search}
 		/>
 		<InputGroup.Addon>
-			<SearchIcon />
+			<SearchIcon aria-hidden="true" />
 		</InputGroup.Addon>
 	</InputGroup.Root>
 
 	{#if filtered.length === 0}
-		<div class="flex flex-col items-center justify-center gap-2 py-8 text-muted-foreground">
-			<PackageIcon size={40} />
+		<div
+			class="flex flex-col items-center justify-center gap-2 py-8 text-muted-foreground"
+			aria-live="polite"
+			aria-atomic="true"
+		>
+			<PackageIcon size={40} aria-hidden="true" />
 			<p class="text-body-sm">
 				Produk tidak ditemukan. Gunakan input manual untuk menambahkan item custom.
 			</p>
 		</div>
 	{:else}
-		<div class="grid grid-cols-2 gap-3">
+		<div
+			class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4"
+			role="list"
+			aria-label="Daftar produk"
+		>
 			{#each displayItems as product (product.id)}
 				{@const qty = cartMap.get(product.id) ?? 0}
 				<button
 					type="button"
 					onclick={() => onselect(product)}
 					aria-pressed={qty > 0}
-					class="relative flex min-h-18 cursor-pointer flex-col items-start justify-center gap-1 rounded-xl bg-card p-4 text-left shadow-sm transition-all hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] {qty >
+					class="relative flex min-h-18 cursor-pointer flex-col items-start justify-center gap-1 rounded-xl bg-card p-4 text-left shadow-sm transition-[color,background-color,transform] hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] {qty >
 					0
 						? 'border-2 border-primary'
 						: 'border border-transparent'}"
@@ -84,7 +96,9 @@
 							{qty}
 						</span>
 					{/if}
-					<span class="line-clamp-2 text-body-md font-semibold">{product.name}</span>
+					<span class="line-clamp-2 text-body-md font-semibold" title={product.name}
+						>{product.name}</span
+					>
 					<span class="text-price-display text-primary">{formatCurrency(product.price)}</span>
 				</button>
 			{/each}

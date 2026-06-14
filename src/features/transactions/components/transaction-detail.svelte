@@ -15,7 +15,7 @@
 <Card.Root>
 	<Card.Content class="space-y-4">
 		<div class="space-y-1">
-			<p class="text-sm text-gray-500">{formatDateTime(transaction.created_at)}</p>
+			<p class="text-body-sm text-muted-foreground">{formatDateTime(transaction.created_at)}</p>
 			<p class="text-2xl font-bold text-primary">{formatCurrency(transaction.total)}</p>
 		</div>
 	</Card.Content>
@@ -24,19 +24,15 @@
 {#if items.length > 0}
 	<div class="mt-4 space-y-2">
 		{#each items as item (item.id)}
-			<Card.Root>
-				<Card.Content>
-					<div class="flex items-center justify-between">
-						<div class="space-y-1">
-							<p class="font-medium">{item.name}</p>
-							<p class="text-sm text-gray-500">
-								{formatCurrency(item.price)} &times; {item.qty}
-							</p>
-						</div>
-						<p class="font-semibold">{formatCurrency(item.subtotal)}</p>
-					</div>
-				</Card.Content>
-			</Card.Root>
+			<div class="flex items-center justify-between rounded-xl border bg-card p-4">
+				<div class="space-y-1">
+					<p class="font-medium">{item.name}</p>
+					<p class="text-body-sm text-muted-foreground">
+						{formatCurrency(item.price)} &times; {item.qty}
+					</p>
+				</div>
+				<p class="font-semibold">{formatCurrency(item.subtotal)}</p>
+			</div>
 		{/each}
 	</div>
 {/if}
@@ -54,7 +50,7 @@
 		{#if transaction.amount_paid >= transaction.total}
 			<div class="flex items-center justify-between border-t pt-2">
 				<p class="font-semibold">Kembalian</p>
-				<p class="text-lg font-medium text-green-600">
+				<p class="text-lg font-medium text-semantic-success">
 					{formatCurrency(transaction.amount_paid - transaction.total)}
 				</p>
 			</div>

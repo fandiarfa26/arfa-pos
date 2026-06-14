@@ -23,6 +23,6 @@
 </script>
 
 <div class="my-6 flex flex-col items-center justify-center gap-2 p-4">
-	<PackageIcon size={48} class="text-primary" />
+	<PackageIcon size={48} class="text-primary" aria-hidden="true" />
 	<p class="text-sm text-primary">{message ?? text}</p>
 </div>

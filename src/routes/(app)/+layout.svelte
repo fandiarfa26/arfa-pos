@@ -7,7 +7,7 @@
 
 <PageContainer>
 	<AppHeader name={data.user?.user_metadata.name} />
-	<main class="p-4">
+	<main id="main-content" tabindex="-1" class="p-4">
 		{@render children()}
 	</main>
 </PageContainer>

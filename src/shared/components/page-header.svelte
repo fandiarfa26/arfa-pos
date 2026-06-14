@@ -15,7 +15,7 @@
 </script>
 
 <div class={cn('flex items-center gap-4', className)}>
-	<Button variant="outline" {onclick}>
+	<Button variant="outline" {onclick} aria-label="Kembali" class="min-h-11 min-w-11">
 		<ArrowLeftIcon />
 	</Button>
 	<span class="text-lg font-bold text-primary">{title}</span>

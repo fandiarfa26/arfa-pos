@@ -37,9 +37,9 @@
 		</div>
 	{:else if isEmpty}
 		<div class="my-8 flex flex-col items-center justify-center gap-3">
-			<ReceiptIcon size={48} class="text-muted-foreground" />
+			<ReceiptIcon size={48} class="text-muted-foreground" aria-hidden="true" />
 			<p class="text-body-sm text-muted-foreground">Belum ada transaksi hari ini.</p>
-			<p class="text-body-xs text-muted-foreground">
+			<p class="text-body-sm text-muted-foreground">
 				Mulai transaksi baru atau tambahkan produk terlebih dahulu.
 			</p>
 		</div>
@@ -49,11 +49,11 @@
 				label="Total Pendapatan"
 				value={formatCurrency(data.summary.todayRevenue)}
 			>
-				<DollarSignIcon size={24} />
+				<DollarSignIcon size={24} aria-hidden="true" />
 			</DashboardStatsCard>
 
 			<DashboardStatsCard label="Transaksi Hari Ini" value={String(data.summary.todayCount)}>
-				<ReceiptIcon size={24} />
+				<ReceiptIcon size={24} aria-hidden="true" />
 			</DashboardStatsCard>
 		</div>
 	{/if}
@@ -61,13 +61,13 @@
 	<div class="flex flex-col gap-3">
 		<a href={resolve('/pos')} class="w-full">
 			<Button class="w-full" size="lg">
-				<ShoppingCartIcon />
+				<ShoppingCartIcon aria-hidden="true" />
 				Buka POS
 			</Button>
 		</a>
 		<a href={resolve('/products')} class="w-full">
 			<Button variant="outline" class="w-full" size="lg">
-				<PackageIcon />
+				<PackageIcon aria-hidden="true" />
 				Kelola Produk
 			</Button>
 		</a>
@@ -76,8 +76,14 @@
 	{#if !loading && !isEmpty && data.summary.recentTransactions.length > 0}
 		<section class="space-y-3">
 			<div class="flex items-center justify-between">
-				<h2 class="text-title-sm">Transaksi Terakhir</h2>
-				<a href={resolve('/transactions')} class="text-body-sm text-primary"> Lihat Semua </a>
+				<h2 class="text-label-bold">Transaksi Terakhir</h2>
+				<a
+					href={resolve('/transactions')}
+					class="text-body-sm text-primary"
+					aria-label="Lihat semua transaksi"
+				>
+					Lihat Semua
+				</a>
 			</div>
 
 			<div class="space-y-2">

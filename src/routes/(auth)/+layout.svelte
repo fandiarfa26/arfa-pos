@@ -1,18 +1,33 @@
 <script lang="ts">
-	import { Store } from '@lucide/svelte';
+	import { Store, Moon, Sun } from '@lucide/svelte';
+	import { toggleMode, mode } from 'mode-watcher';
 	const { children } = $props();
 </script>
 
 <div class="flex min-h-screen flex-col bg-background text-foreground">
 	<!-- Top Navigation Anchor -->
 	<header
-		class="top-0 mx-auto flex h-16 w-full max-w-7xl items-center justify-center bg-background px-gutter"
+		class="top-0 mx-auto flex h-16 w-full max-w-7xl items-center justify-between bg-background px-gutter"
 	>
+		<div class="flex-1"></div>
 		<div class="text-headline-md font-headline-md font-bold text-primary">ArfaPOS</div>
+		<div class="flex flex-1 items-center justify-end">
+			<button
+				onclick={toggleMode}
+				aria-label={mode.current === 'dark' ? 'Mode terang' : 'Mode gelap'}
+				class="flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+			>
+				{#if mode.current === 'dark'}
+					<Sun size={20} aria-hidden="true" />
+				{:else}
+					<Moon size={20} aria-hidden="true" />
+				{/if}
+			</button>
+		</div>
 	</header>
 
 	<main class="flex grow items-center justify-center px-gutter py-xl">
-		<div class="w-full max-w-110">
+		<div class="w-full max-w-110 lg:max-w-lg">
 			{@render children()}
 
 			<!-- Warm Decorative Element -->

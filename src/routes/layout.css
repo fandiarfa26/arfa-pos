@@ -1,28 +1,27 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn-svelte/tailwind.css';
-@import '@fontsource-variable/inter';
 
 @custom-variant dark (&:is(.dark *));
 @plugin '@tailwindcss/forms';
 
 @theme {
 	--color-on-secondary: #ffffff;
-	--color-primary-light: #e6c7a8;
+	--color-primary-light: var(--primary-light);
 	--color-error-container: #ffdad6;
 	--color-surface-container-high: #f5e5dc;
-	--color-background: #fff8f5;
-	--color-text-muted: #4a403a;
+	--color-background: var(--background);
+	--color-text-muted: var(--muted-foreground);
 	--color-primary-container: #c58b5d;
 	--color-on-error: #ffffff;
 	--color-inverse-primary: #f9b987;
-	--color-outline-variant: #d6c3b7;
+	--color-outline-variant: var(--border);
 	--color-semantic-success: #438e64;
 	--color-surface-container-low: #fff1e9;
-	--color-on-primary: #ffffff;
+	--color-on-primary: var(--primary-foreground);
 	--color-on-tertiary-container: #00353f;
 	--color-on-tertiary-fixed: #001f26;
-	--color-surface: #fff8f5;
+	--color-surface: var(--background);
 	--color-semantic-warning: #d9974c;
 	--color-tertiary: #266675;
 	--color-surface-variant: #efe0d6;
@@ -44,17 +43,17 @@
 	--color-surface-tint: #84532a;
 	--color-on-error-container: #93000a;
 	--color-secondary-fixed: #e5e2dd;
-	--color-secondary: #5f5e5b;
+	--color-secondary: var(--secondary);
 	--color-on-primary-container: #4c2601;
 	--color-inverse-surface: #382f29;
 	--color-surface-dim: #e6d7ce;
 	--color-surface-container: #fbebe2;
 	--color-secondary-container: #e5e2dd;
-	--color-primary: #84532a;
+	--color-primary: var(--primary);
 	--color-outline: #84746a;
 	--color-bg-deep: #f5f1ea;
 	--color-tertiary-container: #64a0b0;
-	--color-primary-dark: #8c5a3c;
+	--color-primary-dark: var(--primary-dark);
 	--color-on-secondary-container: #656461;
 	--color-surface-bright: #fff8f5;
 	--color-on-tertiary: #ffffff;
@@ -80,7 +79,7 @@
 	--spacing-gutter: 16px;
 	--spacing-xl: 24px;
 	--spacing-xs: 4px;
-	--font-sans: 'Inter Variable', sans-serif;
+	--font-sans: 'Geist', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--color-sidebar-ring: var(--sidebar-ring);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -174,20 +173,40 @@
 }
 
 body {
-	background-color: #faf7f2;
 	-webkit-font-smoothing: antialiased;
 }
 
-.material-symbols-outlined {
-	font-variation-settings:
-		'FILL' 0,
-		'wght' 400,
-		'GRAD' 0,
-		'opsz' 24;
+@utility pb-safe {
+	padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-.login-card {
-	box-shadow: 0px 4px 20px rgba(58, 49, 43, 0.06);
+.skip-link {
+	position: absolute;
+	top: -100%;
+	left: 8px;
+	z-index: 100;
+	padding: 8px 16px;
+	border-radius: 8px;
+	background: var(--primary);
+	color: var(--primary-foreground);
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: top 0.15s ease-out;
+}
+.skip-link:focus {
+	top: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
 }
 
 :root {
@@ -202,7 +221,7 @@ body {
 	--secondary: #f5f1ea;
 	--secondary-foreground: #3a312b;
 	--muted: #f5f1ea;
-	--muted-foreground: #84746a;
+	--muted-foreground: #7a685c;
 	--accent: #fff1e9;
 	--accent-foreground: #84532a;
 	--destructive: #b64e4e;
@@ -210,6 +229,8 @@ body {
 	--border: #d6c3b7;
 	--input: #d6c3b7;
 	--ring: #e6c7a8;
+	--primary-dark: #6b421f;
+	--primary-light: #e6c7a8;
 	--radius: 1rem;
 	--sidebar: #ffffff;
 	--sidebar-foreground: #2b2b2b;
@@ -241,6 +262,8 @@ body {
 	--border: #4a3c33;
 	--input: #4a3c33;
 	--ring: #84532a;
+	--primary-dark: #d4b08c;
+	--primary-light: #c9976a;
 	--sidebar: #2a201a;
 	--sidebar-foreground: #f5e5dc;
 	--sidebar-primary: #e6c7a8;

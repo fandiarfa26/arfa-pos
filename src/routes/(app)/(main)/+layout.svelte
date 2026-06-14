@@ -4,6 +4,8 @@
 	const { children } = $props();
 </script>
 
+<a href="#main-content" class="skip-link">Langsung ke konten</a>
+
 <div class="pb-16">
 	{@render children()}
 </div>

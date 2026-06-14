@@ -93,7 +93,7 @@
 						/>
 					</InputGroup.Root>
 					{#if priceError}
-						<p class="text-body-sm text-semantic-danger">{priceError}</p>
+						<p class="text-body-sm text-semantic-danger" role="alert">{priceError}</p>
 					{/if}
 				</div>
 				<div class="space-y-2">
@@ -120,7 +120,7 @@
 				</div>
 			</div>
 			{#if nameError}
-				<p class="text-body-sm text-semantic-danger">{nameError}</p>
+				<p class="text-body-sm text-semantic-danger" role="alert">{nameError}</p>
 			{/if}
 		</div>
 		<Dialog.Footer>

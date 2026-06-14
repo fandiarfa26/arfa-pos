@@ -18,14 +18,14 @@
 		<Label for={id}
 			>{label}
 			{#if isRequired}
-				<span class="text-red-500">*</span>
+				<span class="text-semantic-danger">*</span>
 			{:else}
-				<span class="text-xs text-gray-400">(OPSIONAL)</span>
+				<span class="text-label-caps text-muted-foreground">(OPSIONAL)</span>
 			{/if}</Label
 		>
 	{/if}
 	{@render children()}
 	{#if error}
-		<p class="text-sm text-red-500">{error}</p>
+		<p class="text-body-sm text-semantic-danger" role="alert">{error}</p>
 	{/if}
 </div>

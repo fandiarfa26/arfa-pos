@@ -17,10 +17,10 @@
 	<Card.Root>
 		<Card.Content class="flex items-center justify-between">
 			<div class="space-y-1">
-				<p class="text-sm text-gray-500">{formatDateTime(transaction.created_at)}</p>
+				<p class="text-body-sm text-muted-foreground">{formatDateTime(transaction.created_at)}</p>
 				<p class="text-lg font-semibold text-primary">{formatCurrency(transaction.total)}</p>
 			</div>
-			<ChevronRightIcon class="size-5 text-gray-400" />
+			<ChevronRightIcon class="size-5 text-muted-foreground" />
 		</Card.Content>
 	</Card.Root>
 </a>

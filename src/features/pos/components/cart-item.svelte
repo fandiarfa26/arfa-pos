@@ -18,37 +18,40 @@
 <div class="space-y-1 rounded-xl bg-card p-3 shadow-sm">
 	<!-- Top row: name + actions -->
 	<div class="flex items-center justify-between gap-4">
-		<p class="min-w-0 flex-1 truncate text-body-sm font-semibold">{item.name}</p>
+		<p class="min-w-0 flex-1 truncate text-body-sm font-semibold" title={item.name}>{item.name}</p>
 		<div class="flex shrink-0 items-center gap-1">
 			<Button
-				size="icon-xs"
+				size="icon"
 				variant="outline"
 				disabled={item.qty <= 1}
 				aria-label="Kurangi jumlah"
 				onclick={() => onupdateqty(item.id, -1)}
+				class="h-11 w-11"
 			>
-				<MinusIcon />
+				<MinusIcon class="size-4" />
 			</Button>
 			<span aria-label="{item.qty} item" class="min-w-[24px] text-center text-body-md font-semibold"
 				>{item.qty}</span
 			>
 			<Button
-				size="icon-xs"
+				size="icon"
 				variant="outline"
 				aria-label="Tambah jumlah"
 				onclick={() => onupdateqty(item.id, 1)}
+				class="h-11 w-11"
 			>
-				<PlusIcon />
+				<PlusIcon class="size-4" />
 			</Button>
 		</div>
 		<div class="flex shrink-0 items-center">
 			<Button
-				size="icon-xs"
+				size="icon"
 				variant="destructive"
 				aria-label="Hapus item"
 				onclick={() => onremove(item.id)}
+				class="h-11 w-11"
 			>
-				<TrashIcon />
+				<TrashIcon class="size-4" />
 			</Button>
 		</div>
 	</div>
