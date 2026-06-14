@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ProductForm from '../../../../features/products/components/product-form.svelte';
-	import type { ProductFormState } from '../../../../features/products/types/product-form-state';
+	import ProductForm from '$features/products/components/product-form.svelte';
+	import type { ProductFormState } from '$features/products/types/product-form-state';
 	import PageHeader from '../../../../shared/components/page-header.svelte';
 	import type { PageProps } from './$types';
 

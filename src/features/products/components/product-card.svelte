@@ -34,12 +34,12 @@
 	<Card.Footer class="pt-0">
 		<div class="flex w-full items-center justify-end gap-1">
 			<a href={resolve(`/products/${product.sku}`)}>
-				<Button variant="ghost" size="sm" class="text-primary h-7 px-2">
+				<Button variant="ghost" size="sm" class="h-7 px-2 text-primary">
 					<PencilIcon class="size-3.5" /> Ubah
 				</Button>
 			</a>
 			<ProductDeleteDialog productId={product.id}>
-				<Button variant="ghost" size="sm" class="text-semantic-danger h-7 px-2">
+				<Button variant="ghost" size="sm" class="h-7 px-2 text-semantic-danger">
 					<TrashIcon class="size-3.5" /> Hapus
 				</Button>
 			</ProductDeleteDialog>

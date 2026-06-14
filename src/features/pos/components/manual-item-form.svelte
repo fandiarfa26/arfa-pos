@@ -30,22 +30,34 @@
 		name = '';
 		priceStr = '';
 		qty = 1;
-		nameError = '';
+		resetErrors();
 	}
 
+	let priceError = $state('');
+
 	function handleSubmit() {
+		let hasError = false;
 		if (!name.trim()) {
 			nameError = 'Nama item wajib diisi';
-			return;
+			hasError = true;
+		} else {
+			nameError = '';
 		}
 		const price = Number(priceStr);
 		if (price <= 0) {
-			nameError = 'Harga harus lebih dari 0';
-			return;
+			priceError = 'Harga harus lebih dari 0';
+			hasError = true;
+		} else {
+			priceError = '';
 		}
-		nameError = '';
+		if (hasError) return;
 		onadd(name.trim(), price, qty);
 		reset();
+	}
+
+	function resetErrors() {
+		nameError = '';
+		priceError = '';
 	}
 </script>
 
@@ -74,9 +86,15 @@
 							type="number"
 							placeholder="10000"
 							value={priceStr}
-							oninput={handlePriceInput}
+							oninput={() => {
+								handlePriceInput(event!);
+								priceError = '';
+							}}
 						/>
 					</InputGroup.Root>
+					{#if priceError}
+						<p class="text-body-sm text-semantic-danger">{priceError}</p>
+					{/if}
 				</div>
 				<div class="space-y-2">
 					<Label for="manual-qty">Qty</Label>

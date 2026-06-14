@@ -27,8 +27,7 @@
 			? products.filter((p) => p.name.toLowerCase().includes(search.trim().toLowerCase()))
 			: products
 	);
-	let showSearchHint = $derived(filtered.length > 6);
-	let displayItems = $derived(filtered.slice(0, 6));
+	let displayItems = $derived(filtered);
 </script>
 
 {#if loading}
@@ -44,8 +43,14 @@
 		<p class="text-body-sm">Belum ada produk</p>
 	</div>
 {:else}
-	<InputGroup.Root class="mb-3 bg-white">
-		<InputGroup.Input type="search" placeholder="Cari produk..." bind:value={search} />
+	<label for="pos-search" class="sr-only">Cari produk</label>
+	<InputGroup.Root class="mb-3 bg-background">
+		<InputGroup.Input
+			id="pos-search"
+			type="search"
+			placeholder="Cari produk..."
+			bind:value={search}
+		/>
 		<InputGroup.Addon>
 			<SearchIcon />
 		</InputGroup.Addon>
@@ -65,14 +70,16 @@
 				<button
 					type="button"
 					onclick={() => onselect(product)}
-					class="relative flex min-h-18 cursor-pointer flex-col items-start justify-center gap-1 rounded-xl bg-card p-4 text-left shadow-sm transition-all active:scale-[0.97] {qty >
+					aria-pressed={qty > 0}
+					class="relative flex min-h-18 cursor-pointer flex-col items-start justify-center gap-1 rounded-xl bg-card p-4 text-left shadow-sm transition-all hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] {qty >
 					0
 						? 'border-2 border-primary'
 						: 'border border-transparent'}"
 				>
 					{#if qty > 0}
 						<span
-							class="absolute top-1 right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-bold text-white"
+							aria-label="{qty} item dipilih"
+							class="absolute top-1 right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-bold text-primary-foreground"
 						>
 							{qty}
 						</span>
@@ -82,10 +89,5 @@
 				</button>
 			{/each}
 		</div>
-		{#if showSearchHint}
-			<p class="mb-3 text-body-sm text-muted-foreground">
-				Banyak produk ditemukan. Gunakan pencarian untuk produk spesifik.
-			</p>
-		{/if}
 	{/if}
 {/if}

@@ -1,13 +1,15 @@
 import { fail } from '@sveltejs/kit';
-import type { Product } from '../../../../features/products/types/product';
-import { deleteProductService } from '../../../../features/products/services/delete-product-service';
+import type { Product } from '$features/products/types/product';
+import { deleteProductService } from '$features/products/services/delete-product-service';
 
 export async function load({ locals, url }) {
 	const search = url.searchParams.get('search')?.trim() ?? '';
+	const userId = locals.user?.id;
 
 	let query = locals.supabase
 		.from('products')
 		.select('*')
+		.eq('user_id', userId)
 		.order('created_at', { ascending: false });
 
 	if (search) {
@@ -40,7 +42,7 @@ export const actions = {
 		const formData = await request.formData();
 		const productId = formData.get('productId') as string;
 
-		const { error } = await deleteProductService(locals.supabase, productId);
+		const { error } = await deleteProductService(locals.supabase, productId, locals.user?.id);
 
 		if (error) {
 			return fail(500, {

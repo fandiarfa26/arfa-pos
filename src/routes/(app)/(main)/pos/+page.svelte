@@ -13,6 +13,8 @@
 	import { toast } from 'svelte-sonner';
 	import { enhance } from '$app/forms';
 	import { handleFormToast } from '$lib/utils/handle-form-toast';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	type Props = {
 		data: PageData;
@@ -58,7 +60,7 @@
 	<div class="flex min-h-[calc(100dvh-4rem)] flex-col">
 		<div class="flex-1 overflow-y-auto pb-44">
 			<div class="space-y-6">
-				<h2 class="text-headline-md">Pilih Produk</h2>
+				<h1 class="text-headline-md">Pilih Produk</h1>
 				<ProductGrid
 					products={data.products}
 					{loading}
@@ -77,6 +79,7 @@
 					Lihat Cart
 					{#if cart.items.length > 0}
 						<span
+							aria-label="{itemCount} item di cart"
 							class="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs font-bold text-primary"
 						>
 							{itemCount}
@@ -98,7 +101,7 @@
 		<!-- Fixed bottom bar -->
 		<div class="fixed right-0 bottom-16 left-0 z-10 border-t bg-background">
 			<div class="mx-auto w-full max-w-screen-sm space-y-3 px-4 py-4">
-				<div class="flex items-center justify-between">
+				<div class="flex items-center justify-between" aria-live="polite" aria-atomic="true">
 					<p class="text-body-sm text-muted-foreground">{itemCount} item</p>
 					<p class="text-price-display text-primary">{formatCurrency(total)}</p>
 				</div>
@@ -121,6 +124,7 @@
 				if (result.type === 'success') {
 					cart.clearCart();
 					view = 'select';
+					goto(resolve('/dashboard'))
 				}
 			};
 		}}
@@ -157,14 +161,14 @@
 				<div class="mx-auto w-full max-w-screen-sm space-y-3 px-4 py-4">
 					<!-- Change / Shortfall Display -->
 					{#if amountPaid >= total && total > 0}
-						<div class="rounded-lg bg-emerald-50 p-3 text-center">
-							<p class="text-xs text-emerald-600">Kembalian</p>
-							<p class="text-xl font-bold text-emerald-700">{formatCurrency(change)}</p>
+						<div class="rounded-lg bg-semantic-success/10 p-3 text-center">
+							<p class="text-label-caps text-semantic-success">Kembalian</p>
+							<p class="text-price-display text-semantic-success">{formatCurrency(change)}</p>
 						</div>
 					{:else if amountPaid > 0 && amountPaid < total}
-						<div class="rounded-lg bg-amber-50 p-3 text-center">
-							<p class="text-xs text-amber-600">Kurang</p>
-							<p class="text-xl font-bold text-amber-700">
+						<div class="rounded-lg bg-semantic-warning/10 p-3 text-center">
+							<p class="text-label-caps text-semantic-warning">Kurang</p>
+							<p class="text-price-display text-semantic-warning">
 								{formatCurrency(total - amountPaid)}
 							</p>
 						</div>

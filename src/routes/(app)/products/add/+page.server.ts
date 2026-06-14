@@ -1,7 +1,7 @@
 import { fail } from '@sveltejs/kit';
-import { productSchema } from '../../../../features/products/schemas/product-schema.js';
+import { productSchema } from '$features/products/schemas/product-schema';
 import z from 'zod';
-import { generateSku } from '$lib/utils/generate-sku.js';
+import { generateSku } from '$lib/utils/generate-sku';
 
 export const actions = {
 	createProduct: async ({ request, locals }) => {

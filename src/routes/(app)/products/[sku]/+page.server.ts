@@ -1,13 +1,16 @@
 import z from 'zod';
-import { productSchema } from '../../../../features/products/schemas/product-schema.js';
-import type { Product } from '../../../../features/products/types/product.js';
+import { productSchema } from '$features/products/schemas/product-schema';
+import type { Product } from '$features/products/types/product';
 import { fail, error } from '@sveltejs/kit';
 
 export async function load({ locals, params }) {
+	const userId = locals.user?.id;
+
 	const { data, error: productError } = await locals.supabase
 		.from('products')
 		.select('*')
 		.eq('sku', params.sku)
+		.eq('user_id', userId)
 		.single();
 
 	if (productError || !data) {
@@ -59,6 +62,7 @@ export const actions = {
 		const parsedStock = stockValue ? Number(stockValue) : null;
 
 		const sku = params.sku;
+		const userId = locals.user?.id;
 
 		const { error } = await locals.supabase
 			.from('products')
@@ -68,7 +72,8 @@ export const actions = {
 				price: parsedPrice,
 				stock: parsedStock
 			})
-			.eq('sku', sku);
+			.eq('sku', sku)
+			.eq('user_id', userId);
 
 		if (error) {
 			return fail(500, {

@@ -6,6 +6,7 @@ export async function load({ locals }) {
 	const query = locals.supabase
 		.from('products')
 		.select('*')
+		.eq('user_id', locals.user?.id)
 		.order('created_at', { ascending: false });
 
 	const { data, error } = await query;

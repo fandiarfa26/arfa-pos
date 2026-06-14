@@ -1,5 +1,5 @@
-<script>
-	import ProductList from '../../../../features/products/components/product-list.svelte';
+<script lang="ts">
+	import ProductList from '$features/products/components/product-list.svelte';
 
 	const { data } = $props();
 </script>

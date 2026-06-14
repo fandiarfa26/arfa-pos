@@ -24,17 +24,30 @@
 				size="icon-xs"
 				variant="outline"
 				disabled={item.qty <= 1}
+				aria-label="Kurangi jumlah"
 				onclick={() => onupdateqty(item.id, -1)}
 			>
 				<MinusIcon />
 			</Button>
-			<span class="min-w-[24px] text-center text-body-md font-semibold">{item.qty}</span>
-			<Button size="icon-xs" variant="outline" onclick={() => onupdateqty(item.id, 1)}>
+			<span aria-label="{item.qty} item" class="min-w-[24px] text-center text-body-md font-semibold"
+				>{item.qty}</span
+			>
+			<Button
+				size="icon-xs"
+				variant="outline"
+				aria-label="Tambah jumlah"
+				onclick={() => onupdateqty(item.id, 1)}
+			>
 				<PlusIcon />
 			</Button>
 		</div>
 		<div class="flex shrink-0 items-center">
-			<Button size="icon-xs" variant="destructive" onclick={() => onremove(item.id)}>
+			<Button
+				size="icon-xs"
+				variant="destructive"
+				aria-label="Hapus item"
+				onclick={() => onremove(item.id)}
+			>
 				<TrashIcon />
 			</Button>
 		</div>
