@@ -76,6 +76,9 @@ export const actions = {
 		const { error: itemsError } = await locals.supabase.from('transaction_items').insert(txItems);
 
 		if (itemsError) {
+			// Cleanup orphaned transaction
+			await locals.supabase.from('transactions').delete().eq('id', transaction.id);
+
 			return fail(500, {
 				message: 'Gagal menyimpan item transaksi',
 				detail: itemsError.message
