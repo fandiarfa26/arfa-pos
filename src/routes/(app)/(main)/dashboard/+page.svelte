@@ -39,7 +39,7 @@
 
 	{#if loading}
 		<div class="grid grid-cols-2 gap-4">
-			<DashboardStatsCard label="Total Pendapatan" value="" loading={true} />
+			<DashboardStatsCard label="Pendapatan Hari Ini" value="" loading={true} />
 			<DashboardStatsCard label="Transaksi Hari Ini" value="" loading={true} />
 		</div>
 	{:else if isEmpty}
@@ -53,7 +53,7 @@
 	{:else}
 		<div class="grid grid-cols-2 gap-4">
 			<DashboardStatsCard
-				label="Total Pendapatan"
+				label="Pendapatan Hari Ini"
 				value={formatCurrency(data.summary.todayRevenue)}
 			>
 				<DollarSignIcon size={24} aria-hidden="true" />

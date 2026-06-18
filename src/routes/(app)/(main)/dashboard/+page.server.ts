@@ -21,6 +21,7 @@ export async function load({ locals }) {
 		.from('transactions')
 		.select('id, total, amount_paid, created_at')
 		.eq('user_id', userId)
+		.gte('created_at', today.toISOString())
 		.order('created_at', { ascending: false })
 		.limit(5);
 
