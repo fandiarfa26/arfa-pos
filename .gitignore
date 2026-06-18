@@ -22,5 +22,14 @@ Thumbs.db
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# Testing
+coverage/
+
+# TypeScript
+*.tsbuildinfo
+
+# pnpm
+.pnpm-debug.log
+
 *storybook.log
 storybook-static
