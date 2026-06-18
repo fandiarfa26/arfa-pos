@@ -34,7 +34,13 @@
 	let change = $derived(amountPaid - total);
 
 	function handleSelectProduct(product: (typeof data.products)[number]) {
-		cart.addProduct(product);
+		try {
+			cart.addProduct(product);
+		} catch (e) {
+			if (e instanceof Error) {
+				toast.error(e.message);
+			}
+		}
 	}
 
 	function openCart() {

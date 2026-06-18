@@ -6,6 +6,12 @@ export function createCartState() {
 
 	function addProduct(product: Product) {
 		const existing = items.find((i) => i.productId === product.id);
+		const currentQty = existing ? existing.qty : 0;
+
+		if (product.stock !== undefined && product.stock !== null && currentQty >= product.stock) {
+			throw new Error('Stok tidak mencukupi');
+		}
+
 		if (existing) {
 			existing.qty += 1;
 		} else {
