@@ -49,7 +49,7 @@
 <div class="hidden min-h-screen lg:flex">
 	<!-- Left: Brand Hero Panel -->
 	<div
-		class="relative flex w-1/2 flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-primary/[0.04] via-primary/[0.01] to-background p-16"
+		class="relative flex w-1/2 flex-col items-center justify-center overflow-hidden bg-linear-to-br from-primary/4 via-primary/1 to-background p-16"
 	>
 		<!-- Decorative blur orbs -->
 		<div
@@ -59,7 +59,7 @@
 			class="pointer-events-none absolute -right-20 -bottom-20 h-72 w-72 rounded-full bg-primary/10 blur-2xl"
 		></div>
 		<div
-			class="pointer-events-none absolute top-1/3 right-1/4 h-48 w-48 rounded-full bg-primary/[0.03] blur-xl"
+			class="pointer-events-none absolute top-1/3 right-1/4 h-48 w-48 rounded-full bg-primary/3 blur-xl"
 		></div>
 
 		<div class="relative z-10 flex flex-col items-center">

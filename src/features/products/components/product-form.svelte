@@ -92,7 +92,7 @@
 		</InputWrapper>
 	</div>
 	<!-- buttons -->
-	<div class="absolute inset-x-0 bottom-0 mx-auto w-full max-w-screen-sm">
+	<div class="absolute inset-x-0 bottom-0 mx-auto w-full max-w-160">
 		<Card.Root class="rounded-b-none">
 			<Card.Content>
 				<div class="grid grid-cols-1 gap-4">

@@ -79,7 +79,7 @@
 		<!-- Fixed bottom bar -->
 		<div class="fixed right-0 bottom-18 left-0 z-10 border-t bg-background">
 			<div
-				class="mx-auto w-full max-w-screen-sm space-y-2 px-4 py-3 md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl"
+				class="mx-auto w-full max-w-160 space-y-2 px-4 py-3 md:max-w-3xl lg:max-w-5xl xl:max-w-7xl"
 			>
 				<ManualItemForm onadd={cart.addManual} />
 				<Button size="lg" onclick={openCart} class="w-full">
@@ -109,7 +109,7 @@
 		<!-- Fixed bottom bar -->
 		<div class="fixed right-0 bottom-18 left-0 z-10 border-t bg-background">
 			<div
-				class="mx-auto w-full max-w-screen-sm space-y-3 px-4 py-4 md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl"
+				class="mx-auto w-full max-w-160 space-y-3 px-4 py-4 md:max-w-3xl lg:max-w-5xl xl:max-w-7xl"
 			>
 				<div class="flex items-center justify-between" aria-live="polite" aria-atomic="true">
 					<p class="text-body-sm text-muted-foreground">{itemCount} item</p>
@@ -169,7 +169,7 @@
 			<!-- Fixed bottom bar -->
 			<div class="fixed right-0 bottom-18 left-0 z-10 border-t bg-background">
 				<div
-					class="mx-auto w-full max-w-screen-sm space-y-3 px-4 py-4 md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl"
+					class="mx-auto w-full max-w-160 space-y-3 px-4 py-4 md:max-w-3xl lg:max-w-5xl xl:max-w-7xl"
 				>
 					<!-- Change / Shortfall Display -->
 					{#if amountPaid >= total && total > 0}
