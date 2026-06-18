@@ -86,8 +86,8 @@
 							type="number"
 							placeholder="10000"
 							value={priceStr}
-							oninput={() => {
-								handlePriceInput(event!);
+							oninput={(e) => {
+								handlePriceInput(e);
 								priceError = '';
 							}}
 						/>
