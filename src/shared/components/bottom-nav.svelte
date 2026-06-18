@@ -2,6 +2,7 @@
 	import House from '@lucide/svelte/icons/house';
 	import Package from '@lucide/svelte/icons/package';
 	import ShoppingCart from '@lucide/svelte/icons/shopping-cart';
+	import Receipt from '@lucide/svelte/icons/receipt';
 
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
@@ -55,6 +56,22 @@
 				<Package size={20} aria-hidden="true" />
 			</div>
 			<span>Produk</span>
+		</a>
+
+		<a
+			href={resolve('/transactions')}
+			class="flex flex-col items-center gap-1 px-3 py-3 text-xs"
+			class:text-primary={page.url.pathname.startsWith('/transactions')}
+			aria-current={page.url.pathname.startsWith('/transactions') ? 'page' : undefined}
+		>
+			<div
+				class="rounded-lg px-4 py-1 transition-colors {page.url.pathname.startsWith('/transactions')
+					? 'bg-primary/10'
+					: ''}"
+			>
+				<Receipt size={20} aria-hidden="true" />
+			</div>
+			<span>Riwayat</span>
 		</a>
 	</div>
 </nav>
