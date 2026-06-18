@@ -56,7 +56,7 @@ export default defineConfig({
 				includeVersionFile: true
 			},
 			devOptions: {
-				enabled: false,
+				enabled: true,
 				type: 'module'
 			}
 		})
