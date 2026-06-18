@@ -1,13 +1,25 @@
 <script lang="ts">
-	import { onNavigate } from '$app/navigation';
+	import { navigating } from '$app/state';
 
 	let loading = $state(false);
+	let minTimer: ReturnType<typeof setTimeout> | null = null;
 
-	onNavigate(() => {
-		loading = true;
-		return () => {
-			loading = false;
-		};
+	$effect(() => {
+		if (navigating.to) {
+			if (minTimer) {
+				clearTimeout(minTimer);
+				minTimer = null;
+			}
+			loading = true;
+		} else if (loading) {
+			minTimer = setTimeout(() => {
+				loading = false;
+			}, 300);
+
+			return () => {
+				if (minTimer) clearTimeout(minTimer);
+			};
+		}
 	});
 </script>
 
@@ -21,11 +33,20 @@
 		top: 0;
 		left: 0;
 		z-index: 9999;
-		height: 3px;
 		width: 100%;
-		background: linear-gradient(90deg, transparent, var(--color-primary, #84532a) 50%, transparent);
-		animation: loader-slide 1.2s ease-in-out infinite;
+		height: 3px;
+		overflow: hidden;
+		background: var(--color-primary, #84532a);
 		pointer-events: none;
+	}
+
+	.top-loader::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		width: 40%;
+		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+		animation: loader-slide 1s ease-in-out infinite;
 	}
 
 	@keyframes loader-slide {
@@ -33,7 +54,7 @@
 			transform: translateX(-100%);
 		}
 		100% {
-			transform: translateX(100%);
+			transform: translateX(350%);
 		}
 	}
 </style>
