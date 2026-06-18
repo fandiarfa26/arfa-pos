@@ -20,12 +20,12 @@
 			<span class="text-sm font-semibold">{product.name}</span>
 			<span class="shrink-0 text-sm font-medium text-primary">{formatCurrency(product.price)}</span>
 		</div>
-		{#if product.category || product.stock}
+		{#if product.category || (product.stock !== undefined && product.stock !== null)}
 			<div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
 				{#if product.category}
 					<span>Kategori: {product.category}</span>
 				{/if}
-				{#if product.stock}
+				{#if product.stock !== undefined && product.stock !== null}
 					<span>Stok: {product.stock}</span>
 				{/if}
 			</div>
