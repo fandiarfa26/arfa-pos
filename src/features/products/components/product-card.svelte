@@ -39,11 +39,13 @@
 				</Button>
 			</a>
 			<ProductDeleteDialog productId={product.id}>
-				<span class="-m-2 inline-flex p-2">
-					<Button variant="ghost" size="sm" class="px-2 text-semantic-danger">
-						<TrashIcon class="size-3.5" /> Hapus
-					</Button>
-				</span>
+				{#snippet child({ props })}
+					<span class="-m-2 inline-flex p-2">
+						<Button {...props} variant="ghost" size="sm" class="px-2 text-semantic-danger">
+							<TrashIcon class="size-3.5" /> Hapus
+						</Button>
+					</span>
+				{/snippet}
 			</ProductDeleteDialog>
 		</div>
 	</Card.Footer>

@@ -8,11 +8,11 @@
 	import type { Snippet } from 'svelte';
 
 	type Props = {
-		children: Snippet;
+		child: Snippet<[{ props: Record<string, unknown> }]>;
 		productId: string;
 	};
 
-	let { children, productId }: Props = $props();
+	let { child, productId }: Props = $props();
 
 	let isOpen = $state(false);
 
@@ -22,9 +22,7 @@
 </script>
 
 <Dialog.Root bind:open={isOpen}>
-	<Dialog.Trigger>
-		{@render children()}
-	</Dialog.Trigger>
+	<Dialog.Trigger {child}></Dialog.Trigger>
 	<Dialog.Content>
 		<form
 			method="POST"

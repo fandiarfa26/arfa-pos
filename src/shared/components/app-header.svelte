@@ -28,9 +28,17 @@
 
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger>
-					<Button variant="outline" size="icon" aria-label="Menu pengguna" class="h-11 w-11">
-						<User aria-hidden="true" />
-					</Button>
+					{#snippet child({ props })}
+						<Button
+							{...props}
+							variant="outline"
+							size="icon"
+							aria-label="Menu pengguna"
+							class="h-11 w-11"
+						>
+							<User aria-hidden="true" />
+						</Button>
+					{/snippet}
 				</DropdownMenu.Trigger>
 
 				<DropdownMenu.Content align="end">

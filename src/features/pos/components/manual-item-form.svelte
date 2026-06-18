@@ -63,9 +63,11 @@
 
 <Dialog.Root bind:open>
 	<Dialog.Trigger class="w-full">
-		<Button variant="outline" class="w-full">
-			<PlusIcon /> Tambah Produk Lain
-		</Button>
+		{#snippet child({ props })}
+			<Button {...props} variant="outline" class="w-full">
+				<PlusIcon /> Tambah Produk Lain
+			</Button>
+		{/snippet}
 	</Dialog.Trigger>
 	<Dialog.Content>
 		<Dialog.Header>
