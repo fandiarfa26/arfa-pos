@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
+	import { goto } from '$app/navigation';
 	import { ArrowLeftIcon } from '@lucide/svelte';
 
 	let {
 		title,
-		onclick = () => window.history.back(),
+		href,
+		onclick = href ? () => goto(href) : () => window.history.back(),
 		class: className = ''
 	}: {
 		title: string;
+		href?: string;
 		onclick?: () => void;
 		class?: string;
 	} = $props();
