@@ -1,7 +1,14 @@
 <script lang="ts">
-	import { navigating } from '$app/stores';
+	import { onNavigate } from '$app/navigation';
 
-	let loading = $derived($navigating !== null);
+	let loading = $state(false);
+
+	onNavigate(() => {
+		loading = true;
+		return () => {
+			loading = false;
+		};
+	});
 </script>
 
 {#if loading}

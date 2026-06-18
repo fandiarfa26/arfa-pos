@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { navigating } from '$app/stores';
+	import { onNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import type { PageData } from './$types';
 	import {
@@ -17,8 +17,15 @@
 
 	let { data }: { data: PageData } = $props();
 
-	let loading = $derived($navigating);
+	let loading = $state(false);
 	let isEmpty = $derived(data.summary.todayCount === 0 && data.summary.todayRevenue === 0);
+
+	onNavigate(() => {
+		loading = true;
+		return () => {
+			loading = false;
+		};
+	});
 </script>
 
 <svelte:head>
