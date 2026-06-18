@@ -49,17 +49,14 @@ export const actions = {
 				message: 'Periksa kembali data yang Anda masukkan',
 				fieldErrors: {
 					name: tree.properties?.name?.errors?.[0],
-					price: tree.properties?.price?.errors?.[0]
+					category: tree.properties?.category?.errors?.[0],
+					price: tree.properties?.price?.errors?.[0],
+					stock: tree.properties?.stock?.errors?.[0]
 				}
 			});
 		}
 
-		const nameValue = formData.get('name') as string;
-		const priceValue = formData.get('price');
-		const stockValue = formData.get('stock');
-
-		const parsedPrice = Number(priceValue);
-		const parsedStock = stockValue ? Number(stockValue) : null;
+		const { name, category, price, stock } = result.data;
 
 		const sku = params.sku;
 		const userId = locals.user?.id;
@@ -67,10 +64,10 @@ export const actions = {
 		const { error } = await locals.supabase
 			.from('products')
 			.update({
-				name: nameValue,
-				category: formData.get('category'),
-				price: parsedPrice,
-				stock: parsedStock
+				name,
+				category,
+				price,
+				stock
 			})
 			.eq('sku', sku)
 			.eq('user_id', userId);
