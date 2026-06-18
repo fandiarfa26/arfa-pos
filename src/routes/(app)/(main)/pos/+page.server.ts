@@ -87,7 +87,11 @@ export const actions = {
 
 		return {
 			message: 'Transaksi berhasil',
-			transactionId: transaction.id
+			transactionId: transaction.id,
+			total,
+			manualItems: validatedItems
+				.filter((i) => !i.productId)
+				.map((i) => ({ name: i.name, price: i.price }))
 		};
 	}
 };

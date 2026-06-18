@@ -4,6 +4,7 @@
 	import ProductGrid from '$features/pos/components/product-grid.svelte';
 	import ManualItemForm from '$features/pos/components/manual-item-form.svelte';
 	import CartList from '$features/pos/components/cart-list.svelte';
+	import ManualItemsPrompt from '$features/pos/components/manual-items-prompt.svelte';
 	import PageHeader from '$shared/components/page-header.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Spinner } from '$lib/components/ui/spinner';
@@ -31,6 +32,8 @@
 
 	let amountPaid = $state(0);
 	let isSubmitting = $state(false);
+	let checkoutManualItems = $state<{ name: string; price: number }[] | null>(null);
+	let checkoutTotal = $state(0);
 	let change = $derived(amountPaid - total);
 
 	function handleSelectProduct(product: (typeof data.products)[number]) {
@@ -54,6 +57,12 @@
 	function goToPayment() {
 		view = 'payment';
 		amountPaid = 0;
+	}
+
+	function handlePromptClose() {
+		checkoutManualItems = null;
+		checkoutTotal = 0;
+		window.location.href = resolve('/dashboard');
 	}
 </script>
 
@@ -133,8 +142,16 @@
 				isSubmitting = false;
 				if (result.type === 'success') {
 					cart.clearCart();
-					view = 'select';
-					goto(resolve('/dashboard'));
+					const data = result.data as
+						| { manualItems?: { name: string; price: number }[]; total?: number }
+						| undefined;
+					if (data?.manualItems?.length) {
+						checkoutManualItems = data.manualItems;
+						checkoutTotal = data.total ?? 0;
+					} else {
+						view = 'select';
+						goto(resolve('/dashboard'));
+					}
 				}
 			};
 		}}
@@ -202,4 +219,12 @@
 			</div>
 		</div>
 	</form>
+{/if}
+
+{#if checkoutManualItems}
+	<ManualItemsPrompt
+		items={checkoutManualItems}
+		total={checkoutTotal}
+		onclose={handlePromptClose}
+	/>
 {/if}
