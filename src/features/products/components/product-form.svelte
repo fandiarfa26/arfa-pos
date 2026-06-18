@@ -4,7 +4,7 @@
 	import * as InputGroup from '$lib/components/ui/input-group/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { SaveIcon } from '@lucide/svelte';
-	import InputWrapper from '../../../shared/components/input-wrapper.svelte';
+	import InputWrapper from '$shared/components/input-wrapper.svelte';
 	import { enhance } from '$app/forms';
 	import { Spinner } from '$lib/components/ui/spinner';
 	import { handleFormToast } from '$lib/utils/handle-form-toast';

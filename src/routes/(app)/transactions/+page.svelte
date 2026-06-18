@@ -1,6 +1,6 @@
 <script lang="ts">
 	import TransactionList from '$features/transactions/components/transaction-list.svelte';
-	import PageHeader from '../../../shared/components/page-header.svelte';
+	import PageHeader from '$shared/components/page-header.svelte';
 
 	const { data } = $props();
 </script>

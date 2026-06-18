@@ -9,7 +9,8 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		alias: {
-			$features: './src/features'
+			$features: './src/features',
+			$shared: './src/shared'
 		}
 	}
 };

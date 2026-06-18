@@ -4,7 +4,7 @@
 	import ProductGrid from '$features/pos/components/product-grid.svelte';
 	import ManualItemForm from '$features/pos/components/manual-item-form.svelte';
 	import CartList from '$features/pos/components/cart-list.svelte';
-	import PageHeader from '../../../../shared/components/page-header.svelte';
+	import PageHeader from '$shared/components/page-header.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Spinner } from '$lib/components/ui/spinner';
 	import NumericKeypad from '$features/pos/components/numeric-keypad.svelte';

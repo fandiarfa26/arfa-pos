@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PageHeader from '../../../../shared/components/page-header.svelte';
+	import PageHeader from '$shared/components/page-header.svelte';
 	import TransactionDetail from '$features/transactions/components/transaction-detail.svelte';
 
 	const { data } = $props();
