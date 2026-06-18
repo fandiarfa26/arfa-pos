@@ -6,7 +6,7 @@ export function generateSku(name: string): string {
 		.padEnd(3, 'X')
 		.slice(0, 3);
 
-	const random = Math.floor(1000 + Math.random() * 9000);
+	const suffix = crypto.randomUUID().slice(0, 8).toUpperCase();
 
-	return `${prefix}-${random}`;
+	return `${prefix}-${suffix}`;
 }
