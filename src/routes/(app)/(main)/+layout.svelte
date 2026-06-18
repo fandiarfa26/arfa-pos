@@ -6,7 +6,7 @@
 
 <a href="#main-content" class="skip-link">Langsung ke konten</a>
 
-<div class="pb-16">
+<div class="pb-18">
 	{@render children()}
 </div>
 
