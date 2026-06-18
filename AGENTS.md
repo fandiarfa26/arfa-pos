@@ -29,7 +29,7 @@ Run `pnpm format` consistently — Prettier uses **tabs, single quotes, no trail
 - **Feature-based structure** under `src/features/<name>/` with subdirs: `components/`, `schemas/`, `services/`, `types/`. Only `products/` is fully implemented; `pos/` is partial.
 - **Shared components** in `src/shared/components/` (`app-header`, `bottom-nav`, `page-container`, `input-wrapper`, `page-header`).
 - **shadcn-svelte UI** in `src/lib/components/ui/` (Vega style, configured via `components.json`).
-- **Path aliases**: `$features` → `./src/features` (in `svelte.config.js`), `$lib` (SvelteKit default). No `$shared` alias — feature files use relative imports.
+- **Path aliases**: `$features` → `./src/features`, `$shared` → `./src/shared` (in `svelte.config.js`), `$lib` (SvelteKit default).
 - **Global CSS** at `src/routes/layout.css` (not `src/app.css`) — Tailwind 4 `@import`, custom warm-brown theme, dark mode variables, custom `@utility` classes.
 - **Mobile-first centered layout** — `PageContainer` uses `max-w-screen-sm`.
 
@@ -40,7 +40,6 @@ Run `pnpm format` consistently — Prettier uses **tabs, single quotes, no trail
 - **Server-only Zod validation** — Zod schemas live in `features/<name>/schemas/`. Auth forms (login/register) skip Zod and pass raw data to Supabase.
 - **`use:enhance` + svelte-sonner toasts** for form feedback via `handleFormToast()` utility.
 - **Supabase SSR** via `hooks.server.ts` — `event.locals.supabase`, `event.locals.session`, `event.locals.user` set on every request. Auth guard in `(app)/+layout.server.ts`.
-- **Client-side Supabase** (`src/lib/supabase/client.ts`) exists but is unused — dead code.
 
 ## Testing
 

@@ -2,12 +2,13 @@
 	import { Button } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { ArrowLeftIcon } from '@lucide/svelte';
 
 	let {
 		title,
 		href,
-		onclick = href ? () => goto(href) : () => window.history.back(),
+		onclick = href ? () => goto(resolve(href)) : () => window.history.back(),
 		class: className = ''
 	}: {
 		title: string;
