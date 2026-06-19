@@ -62,7 +62,8 @@
 	function handlePromptClose() {
 		checkoutManualItems = null;
 		checkoutTotal = 0;
-		window.location.href = resolve('/dashboard');
+		view = 'select';
+		goto(resolve('/dashboard'));
 	}
 </script>
 
