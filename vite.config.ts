@@ -48,7 +48,6 @@ export default defineConfig({
 			},
 			workbox: {
 				globPatterns: ['client/**/*.{js,css,ico,png,svg,webp,jpg,jpeg,woff,woff2}'],
-				navigateFallback: '/offline',
 				cleanupOutdatedCaches: true,
 				clientsClaim: true
 			},
