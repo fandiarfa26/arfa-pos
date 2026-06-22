@@ -12,6 +12,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import DashboardStatsCard from '$features/dashboard/components/dashboard-stats-card.svelte';
+	import DashboardWeeklyRevenue from '$features/dashboard/components/dashboard-weekly-revenue.svelte';
 	import { formatCurrency } from '$lib/utils/currency';
 	import { formatDateTime } from '$lib/utils/date';
 
@@ -79,6 +80,13 @@
 			</Button>
 		</a>
 	</div>
+
+	{#if !loading}
+		<DashboardWeeklyRevenue
+			weeklyRevenue={data.summary.weeklyRevenue}
+			weeklyTotal={data.summary.weeklyTotal}
+		/>
+	{/if}
 
 	{#if !loading && !isEmpty && data.summary.recentTransactions.length > 0}
 		<section class="space-y-3">

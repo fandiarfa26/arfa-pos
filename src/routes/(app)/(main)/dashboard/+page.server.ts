@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import type { DashboardSummary } from '$features/dashboard/types/dashboard';
+import type { DailyRevenue, DashboardSummary } from '$features/dashboard/types/dashboard';
 import type { Transaction } from '$features/transactions/types/transaction';
 
 export async function load({ locals }) {
@@ -29,6 +29,36 @@ export async function load({ locals }) {
 		throw error(500, 'Gagal memuat data dashboard. Silahkan coba lagi.');
 	}
 
+	const sevenDaysAgo = new Date(today);
+	sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+
+	const { data: weekData, error: weekError } = await locals.supabase
+		.from('transactions')
+		.select('total, created_at')
+		.gte('created_at', sevenDaysAgo.toISOString())
+		.eq('user_id', userId);
+
+	if (weekError) {
+		throw error(500, 'Gagal memuat data dashboard. Silahkan coba lagi.');
+	}
+
+	const revenueByDate = new Map<string, number>();
+	for (const tx of weekData ?? []) {
+		const dateStr = tx.created_at.slice(0, 10);
+		revenueByDate.set(dateStr, (revenueByDate.get(dateStr) ?? 0) + tx.total);
+	}
+
+	const weeklyRevenue: DailyRevenue[] = [];
+	let weeklyTotal = 0;
+	for (let i = 0; i <= 6; i++) {
+		const date = new Date(today);
+		date.setDate(date.getDate() - i);
+		const dateStr = date.toISOString().slice(0, 10);
+		const revenue = revenueByDate.get(dateStr) ?? 0;
+		weeklyRevenue.push({ date: dateStr, revenue });
+		weeklyTotal += revenue;
+	}
+
 	const recentTransactions: Transaction[] = (recentData ?? []).map((tx) => ({
 		id: tx.id,
 		total: tx.total,
@@ -39,7 +69,9 @@ export async function load({ locals }) {
 	const summary: DashboardSummary = {
 		todayRevenue: (todayData ?? []).reduce((sum, tx) => sum + tx.total, 0),
 		todayCount: todayData?.length ?? 0,
-		recentTransactions
+		recentTransactions,
+		weeklyRevenue,
+		weeklyTotal
 	};
 
 	return { summary };
