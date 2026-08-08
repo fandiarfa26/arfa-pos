@@ -17,16 +17,17 @@ ArfaPOS is a **web-based Point of Sale (POS) application** for small Indonesian 
 
 ### Main Business Domains
 
-Based on the codebase, only **one domain is fully implemented**:
+All MVP domains are fully implemented:
 
-| Domain                  | Status                                               |
-| ----------------------- | ---------------------------------------------------- |
-| **Product Management**  | Fully implemented (CRUD + search)                    |
-| **Authentication**      | Fully implemented (register, login, logout, session) |
-| **POS / Cart**          | Fully implemented (product grid, cart, manual items) |
-| **Checkout**            | Fully implemented (payment view, numeric keypad)     |
-| **Transaction History** | Fully implemented (list + detail with items)         |
-| **Dashboard**           | Fully implemented (stats cards, recent transactions) |
+| Domain                  | Status                                                         |
+| ----------------------- | -------------------------------------------------------------- |
+| **Product Management**  | Fully implemented (CRUD + search)                              |
+| **Authentication**      | Fully implemented (register, login, logout, session)           |
+| **POS / Cart**          | Fully implemented (product grid, cart, manual items)           |
+| **Checkout**            | Fully implemented (payment view, numeric keypad)               |
+| **Transaction History** | Fully implemented (list + detail with items)                   |
+| **Expense Management**  | Fully implemented (CRUD + RLS-protected `expenses` table)      |
+| **Dashboard**           | Fully implemented (net revenue, today's stats, weekly revenue) |
 
 ---
 
@@ -101,6 +102,7 @@ arfa-pos/
 ├── tsconfig.json            # Strict TypeScript, bundler module resolution
 ├── eslint.config.js         # ESLint flat config
 ├── static/                  # Static assets (robots.txt)
+├── supabase/migrations/     # SQL migrations (applied manually via dashboard)
 └── src/                     # Application source code
 ```
 
@@ -113,7 +115,12 @@ src/
 ├── hooks.server.ts          # Global handle hook: Supabase SSR client setup
 ├── layout.css               # Tailwind imports + custom warm-brown theme
 ├── features/                # Feature-based modules
-│   └── products/            # (only implemented feature)
+│   ├── expenses/            # Expense management (CRUD)
+│   │   ├── components/      # UI components
+│   │   ├── schemas/         # Zod validation schemas
+│   │   ├── services/        # Database access functions
+│   │   └── types/           # TypeScript interfaces
+│   └── products/            # Product management (CRUD + search)
 │       ├── components/      # UI components
 │       ├── schemas/         # Zod validation schemas
 │       ├── services/        # Database access functions
@@ -121,12 +128,13 @@ src/
 ├── lib/
 │   ├── components/ui/       # shadcn-svelte components (button, card, dialog, etc.)
 │   ├── supabase/            # Supabase browser client factory
-│   ├── utils/               # Utility functions (currency, SKU, toast)
+│   ├── utils/               # Utility functions (currency, date, SKU, toast)
 │   └── vitest-examples/     # Boilerplate test examples
 ├── routes/                  # SvelteKit routes and layouts
 │   ├── (auth)/              # Unauthenticated routes (login, register)
 │   ├── (app)/               # Authenticated routes (auth guard)
-│   │   └── (main)/          # Routes with bottom navigation
+│   │   ├── (main)/          # Routes with bottom navigation (dashboard, pos, products, transactions)
+│   │   └── expenses/        # Expense add (`/expenses/add`) + edit (`/expenses/[id]`) forms
 │   └── logout/              # Logout API endpoint
 ├── shared/
 │   └── components/          # Shared UI components
@@ -135,7 +143,7 @@ src/
 
 ### Feature Folder Structure
 
-The only fully implemented feature (`products`) follows this pattern:
+The fully implemented features (`products`, `expenses`) follow this pattern:
 
 ```
 features/<feature-name>/
@@ -145,7 +153,7 @@ features/<feature-name>/
 └── types/           # TypeScript interfaces and type definitions
 ```
 
-This pattern is defined by PRD.md but only `products` exists. Other domains (`transactions`, `pos`) do not have feature folders yet.
+This pattern is defined by PRD.md. Both `products` and `expenses` follow it. Other domains (`transactions`, `pos`, `dashboard`) do not have feature folders yet — their UI lives directly in `src/routes/`.
 
 ---
 
@@ -153,25 +161,27 @@ This pattern is defined by PRD.md but only `products` exists. Other domains (`tr
 
 ### Feature-Based Structure (Partial)
 
-The codebase adopts a feature-based folder structure under `src/features/`. Currently only `products/` exists with the sub-structure `components/`, `schemas/`, `services/`, `types/`. Other domains (dashboard, POS, transactions) live directly in `src/routes/` as placeholders without feature infrastructure.
+The codebase adopts a feature-based folder structure under `src/features/`. Currently `products/` and `expenses/` exist with the sub-structure `components/`, `schemas/`, `services/`, `types/`. Other domains (dashboard, POS, transactions) live directly in `src/routes/` as placeholders without feature infrastructure.
 
 ### No Repository Pattern
 
-Database queries are executed **inline** in SvelteKit server files (`+page.server.ts`) using `locals.supabase` directly. There is a single small service file:
+Database queries are executed **inline** in SvelteKit server files (`+page.server.ts`) using `locals.supabase` directly. There are two small service files, both for deletes:
 
 - `delete-product-service.ts` — wraps a single Supabase delete call
+- `delete-expense-service.ts` — wraps a single Supabase delete call
 
-Most queries (product list, product by SKU, product insert, product update) are written directly in the route's `load` function or action handler. There is **no abstracted repository or data access layer**.
+Most queries (product list, product by SKU, product insert, product update, expense list, expense insert, expense update) are written directly in the route's `load` function or action handler. There is **no abstracted repository or data access layer**.
 
 ### Service Layer (Minimal)
 
-Only one service exists:
+Only two services exist — both wrap a single delete operation:
 
 ```
 features/products/services/delete-product-service.ts
+features/expenses/services/delete-expense-service.ts
 ```
 
-This function accepts `supabase` client as a parameter and performs a database operation. It is a thin wrapper around Supabase's query builder. Other operations (create, update, list) are inlined in route files.
+These functions accept `supabase` client as a parameter and perform a database operation. They are thin wrappers around Supabase's query builder. Other operations (create, update, list) are inlined in route files.
 
 ### No Dependency Injection
 
@@ -198,7 +208,7 @@ State management uses **only Svelte 5 runes** — no global stores, no Context A
 
 Components are split into three categories:
 
-1. **`src/features/<feature>/components/`** — Feature-specific components (e.g., `product-card.svelte`, `product-form.svelte`)
+1. **`src/features/<feature>/components/`** — Feature-specific components (e.g., `product-card.svelte`, `product-form.svelte`, `expense-list.svelte`, `expense-form.svelte`)
 2. **`src/shared/components/`** — Reusable application components (e.g., `app-header.svelte`, `bottom-nav.svelte`, `page-container.svelte`)
 3. **`src/lib/components/ui/`** — shadcn-svelte primitives (e.g., `button.svelte`, `card/`, `dialog/`)
 
@@ -220,7 +230,7 @@ The `handleFormToast()` utility maps `ActionResult` types to svelte-sonner toast
 
 ### Validation Approach
 
-All server-side validation uses **Zod schemas** (`features/products/schemas/product-schema.ts`):
+All server-side validation uses **Zod schemas** in `features/<feature>/schemas/` (`product-schema.ts`, `expense-schema.ts`):
 
 ```ts
 export const productSchema = z.object({
@@ -256,6 +266,9 @@ Mutations use **SvelteKit form actions** (not REST API routes). Each action is a
 - `?/createProduct` — Zod validated product insert
 - `?/updateProduct` — Zod validated product update
 - `?/deleteProduct` — product delete
+- `?/createExpense` — Zod validated expense insert
+- `?/updateExpense` — Zod validated expense update
+- `?/deleteExpense` — expense delete (lives on the Riwayat `/transactions` route, which hosts both lists)
 
 Actions return either:
 
@@ -274,7 +287,7 @@ No RESTful API endpoints exist. All other mutations are form actions.
 
 1. **Server-side:** `locals.supabase` (created in `hooks.server.ts` via `createServerClient`) is used in `load` functions and action handlers
 2. **Query style:** Direct Supabase query builder calls (`supabase.from('products').select(...)`), no abstraction layer
-3. **User scoping:** Only `createProduct` sets `user_id: locals.user?.id`; other queries do not explicitly filter by user (relies on Supabase RLS policies)
+3. **User scoping:** Load functions and inserts filter with `.eq('user_id', userId)` (products, transactions, expenses). Deletes are scoped via the service functions. Security ultimately relies on Supabase RLS policies.
 4. **Client-side:** `createSupabaseBrowserClient()` function exists in `src/lib/supabase/client.ts` but is not currently used anywhere
 
 ---
@@ -299,6 +312,7 @@ Only one server-side hook exists: `src/hooks.server.ts`. Client-side hooks direc
 Utility files are in `src/lib/utils/` and use kebab-case:
 
 - `currency.ts` — exports `formatCurrency()`
+- `date.ts` — exports `formatDateTime()`, `formatDateOnly()`, `todayDateString()`
 - `generate-sku.ts` — exports `generateSku()`
 - `handle-form-toast.ts` — exports `handleFormToast()`
 
@@ -310,6 +324,9 @@ Feature types are in `features/<feature>/types/`:
 
 - `product.ts` — exports `Product` interface
 - `product-form-state.ts` — exports `ProductFormState` interface
+- `expense.ts` — exports `Expense` interface
+- `expense-form-state.ts` — exports `ExpenseFormState` interface
+- `transaction.ts` — exports `Transaction` and `TransactionItem` interfaces
 
 ---
 
@@ -317,14 +334,14 @@ Feature types are in `features/<feature>/types/`:
 
 ### Current State
 
-Testing infrastructure is **configured but only contains boilerplate examples**:
+Testing infrastructure is **configured, with a small number of real tests**:
 
-| Test Type               | Configured?                 | Real Tests?                                    |
-| ----------------------- | --------------------------- | ---------------------------------------------- |
-| Unit tests (server)     | ✅ Vitest, Node environment | ❌ Only boilerplate (`greet.spec.ts`)          |
-| Browser component tests | ✅ Vitest + Playwright      | ❌ Only boilerplate (`Welcome.svelte.spec.ts`) |
-| Storybook tests         | ✅ Storybook + a11y addon   | ❌ Only boilerplate stories                    |
-| Visual regression       | ✅ Chromatic configured     | ❌ Not used                                    |
+| Test Type               | Configured?                 | Real Tests?                                                                 |
+| ----------------------- | --------------------------- | --------------------------------------------------------------------------- |
+| Unit tests (server)     | ✅ Vitest, Node environment | ✅ `expense-schema.spec.ts`, `date.spec.ts` + boilerplate (`greet.spec.ts`) |
+| Browser component tests | ✅ Vitest + Playwright      | ❌ Only boilerplate (`Welcome.svelte.spec.ts`)                              |
+| Storybook tests         | ✅ Storybook + a11y addon   | ❌ Only boilerplate stories                                                 |
+| Visual regression       | ✅ Chromatic configured     | ❌ Not used                                                                 |
 
 ### Test Configuration (vite.config.ts)
 
@@ -336,19 +353,19 @@ Three Vitest projects are configured:
 
 All tests require explicit assertions (`expect.requireAssertions: true`).
 
-**Needs clarification:** No tests exist for the actual application features (products, auth, etc.). Testing patterns for SvelteKit server actions, load functions, and Supabase queries are not established.
+**Needs clarification:** Real tests cover the expense Zod schema and date utilities. No tests exist yet for server actions, load functions, or Supabase queries. Testing patterns for SvelteKit form actions and Supabase are still not established.
 
 ---
 
 ## 9. Feature Development Guide
 
-This section describes the pattern that the existing `products` feature establishes. It documents what currently exists, not a prescribed workflow.
+This section describes the pattern that the existing `products` and `expenses` features establish. It documents what currently exists, not a prescribed workflow.
 
-### Steps Observed from `products` Feature
+### Steps Observed from `products` and `expenses` Features
 
 1. **Create types** in `features/<name>/types/` — define interfaces for data models
 2. **Create schema** in `features/<name>/schemas/` — Zod validation schema
-3. **Create services** in `features/<name>/services/` — database functions (currently only delete has its own service)
+3. **Create services** in `features/<name>/services/` — database functions (currently only delete operations have their own services)
 4. **Create components** in `features/<name>/components/` — UI components
 5. **Wire up routes** in `src/routes/` — `+page.server.ts` (load + actions) and `+page.svelte` (render)
 
@@ -398,24 +415,26 @@ These are decisions inferred from the existing codebase. Items marked as "Inferr
 
 9. **Typography utilities over Tailwind defaults** — Custom `@utility` classes (`text-headline-md`, `text-body-md`, `text-price-display`, etc.) are defined in `layout.css` and used throughout.
 
+10. **History state for ephemeral UI state** — The Riwayat page tabs (Pemasukan/Pengeluaran) are client-side `$state`, initialized from `page.state` (set via `goto(..., { state })`). `App.PageState` is declared in `app.d.ts`. Tab is not encoded in the URL (no deep-linking, refresh resets to Pemasukan).
+
 ### Missing / Needs Clarification
 
-| Topic                              | Status                                                                                                 |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Error boundary strategy            | No global error handling pattern beyond route-level `+error.svelte`                                    |
-| Loading state conventions          | `ProductListLoading` exists but only one feature uses it                                               |
-| Pagination pattern                 | No pagination exists (product list loads all items)                                                    |
-| Caching / revalidation             | No SWR, TanStack Query, or manual cache strategy                                                       |
-| Client-side Supabase usage         | `createSupabaseBrowserClient()` is defined but never called                                            |
-| E2E tests                          | No Playwright E2E tests exist                                                                          |
-| Database migration management      | No migration files in repo — schema is managed via Supabase dashboard                                  |
-| RLS policy documentation           | Policies exist in Supabase dashboard but are not documented in code                                    |
-| Environment variable documentation | Only `.env` exists; no `.env.example` or schema documentation                                          |
-| Storybook for custom components    | Only boilerplate stories exist                                                                         |
-| Accessibility audit                | `a11y` addon configured but set to `todo` — no explicit audit done                                     |
-| CI/CD pipeline                     | No CI configuration files in repo                                                                      |
-| Dark mode toggle UI                | `mode-watcher` dependency and dark CSS variables exist but no toggle control is implemented            |
-| `$effect` usage pattern            | Zero uses of `$effect` in the codebase. Side effects (search debounce) use manual `setTimeout` instead |
+| Topic                              | Status                                                                                                                                                                 |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Error boundary strategy            | No global error handling pattern beyond route-level `+error.svelte`                                                                                                    |
+| Loading state conventions          | `ProductListLoading` exists but only one feature uses it                                                                                                               |
+| Pagination pattern                 | No pagination exists (product list loads all items)                                                                                                                    |
+| Caching / revalidation             | No SWR, TanStack Query, or manual cache strategy                                                                                                                       |
+| Client-side Supabase usage         | `createSupabaseBrowserClient()` is defined but never called                                                                                                            |
+| E2E tests                          | No Playwright E2E tests exist                                                                                                                                          |
+| Database migration management      | Migration files exist in `supabase/migrations/` (001–003) but are applied manually via the dashboard SQL editor — no automated tooling, no `supabase link`/CI pipeline |
+| RLS policy documentation           | Policies exist in Supabase dashboard but are not documented in code                                                                                                    |
+| Environment variable documentation | Only `.env` exists; no `.env.example` or schema documentation                                                                                                          |
+| Storybook for custom components    | Only boilerplate stories exist                                                                                                                                         |
+| Accessibility audit                | `a11y` addon configured but set to `todo` — no explicit audit done                                                                                                     |
+| CI/CD pipeline                     | No CI configuration files in repo                                                                                                                                      |
+| Dark mode toggle UI                | `mode-watcher` dependency and dark CSS variables exist but no toggle control is implemented                                                                            |
+| `$effect` usage pattern            | Zero uses of `$effect` in the codebase. Side effects (search debounce) use manual `setTimeout` instead                                                                 |
 
 ---
 
@@ -461,28 +480,28 @@ This section documents issues found during the architecture review: missing conv
 
 ### 11.1 Missing Conventions
 
-| Missing Convention              | Details                                                                                                                                                                                                                      |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Test patterns**               | No tests exist for any feature (products, auth). Testing infrastructure is configured (Vitest + Playwright) but only boilerplate examples exist. No pattern for testing server actions, load functions, or Supabase queries. |
-| **Database migration strategy** | No migration files, no migration tooling. Schema is managed directly via Supabase dashboard — no version control, no code review, no rollback path.                                                                          |
-| **Loading state convention**    | No established pattern for when/how to show loading states across features.                                                                                                                                                  |
+| Missing Convention              | Details                                                                                                                                                                                            |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Test patterns**               | Real tests are minimal (`expense-schema.spec.ts`, `date.spec.ts`). No pattern for testing server actions, load functions, or Supabase queries. Infrastructure (Vitest + Playwright) is configured. |
+| **Database migration strategy** | Migration files exist in `supabase/migrations/` but are applied manually via the dashboard — no automated tooling, no versioned CI, no rollback path.                                              |
+| **Loading state convention**    | No established pattern for when/how to show loading states across features.                                                                                                                        |
 
 ### 11.2 Inconsistent Patterns
 
-| #   | Issue                     | Location A                                                               | Location B                                                               | Impact                                                                        |
-| --- | ------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
-| 1   | **Service extraction**    | `deleteProductService` extracted to `services/delete-product-service.ts` | Create, update, and list are inlined directly in `+page.server.ts` files | No consistent criterion for when to extract services vs keep inline.          |
-| 2   | **Server file structure** | Products list has `+page.server.ts` with both `load` + `actions`         | Login/register have only `actions` (no `load`)                           | No convention for when a route needs a server file vs relying on layout data. |
+| #   | Issue                     | Location A                                                                 | Location B                                                               | Impact                                                                                                                      |
+| --- | ------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Service extraction**    | `deleteProductService` and `deleteExpenseService` extracted to `services/` | Create, update, and list are inlined directly in `+page.server.ts` files | Consistent (all deletes are extracted) but the criterion for when to extract services vs keep inline is still undocumented. |
+| 2   | **Server file structure** | Products list has `+page.server.ts` with both `load` + `actions`           | Login/register have only `actions` (no `load`)                           | No convention for when a route needs a server file vs relying on layout data.                                               |
 
 ### 11.3 Architectural Smells
 
-| #   | Smell                               | Location                                                                                               | Why It's a Smell                                                                                                                          |
-| --- | ----------------------------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Business logic in presentation**  | `product-delete-dialog.svelte` has form submission logic, `enhance`, `goto()`, and `handleFormToast()` | Couples UI component to navigation and toast logic. Hard to test, reuse, or change.                                                       |
-| 2   | **Global CSS in routes directory**  | `src/routes/layout.css` contains the global theme, Tailwind imports, and dark mode variables           | Unconventional location. SvelteKit typically uses `src/app.css` for global styles. Could confuse newcomers.                               |
-| 3   | **No client data fetching pattern** | All data fetching is SSR-only via `load` functions; no client-side Supabase pattern exists             | No pattern for client-side real-time features, optimistic updates, or offline support (all documented as future needs in PRD).            |
-| 4   | **Unused dependency**               | `mode-watcher` is imported only by the sonner component for detecting dark mode                        | Dark mode CSS exists but no toggle UI. The dependency is used for a single read, adding weight to the bundle.                             |
-| 5   | **Side effects without `$effect`**  | `product-list-search.svelte` uses manual `clearTimeout`/`setTimeout` for debounce                      | Codebase has zero uses of `$effect` despite having side-effect logic. No established pattern for reactive side effects in Svelte 5 runes. |
+| #   | Smell                               | Location                                                                                                                                   | Why It's a Smell                                                                                                                          |
+| --- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Business logic in presentation**  | `product-delete-dialog.svelte` and `expense-delete-dialog.svelte` have form submission logic, `enhance`, `goto()`, and `handleFormToast()` | Couples UI component to navigation and toast logic. Hard to test, reuse, or change.                                                       |
+| 2   | **Global CSS in routes directory**  | `src/routes/layout.css` contains the global theme, Tailwind imports, and dark mode variables                                               | Unconventional location. SvelteKit typically uses `src/app.css` for global styles. Could confuse newcomers.                               |
+| 3   | **No client data fetching pattern** | All data fetching is SSR-only via `load` functions; no client-side Supabase pattern exists                                                 | No pattern for client-side real-time features, optimistic updates, or offline support (all documented as future needs in PRD).            |
+| 4   | **Unused dependency**               | `mode-watcher` is imported only by the sonner component for detecting dark mode                                                            | Dark mode CSS exists but no toggle UI. The dependency is used for a single read, adding weight to the bundle.                             |
+| 5   | **Side effects without `$effect`**  | `product-list-search.svelte` uses manual `clearTimeout`/`setTimeout` for debounce                                                          | Codebase has zero uses of `$effect` despite having side-effect logic. No established pattern for reactive side effects in Svelte 5 runes. |
 
 ### 11.4 Areas Needing Clarification
 

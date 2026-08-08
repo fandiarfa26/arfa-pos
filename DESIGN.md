@@ -451,9 +451,10 @@ Dashboard:
 
 Fokus:
 
-- total transaksi hari ini
-- total pendapatan
-- jumlah transaksi
+- pendapatan bersih hari ini (nominal terbesar, paling atas)
+- jumlah transaksi dan pengeluaran hari ini (sejajar, ukuran seimbang)
+- grafik pendapatan mingguan
+- transaksi terakhir
 
 ---
 
@@ -477,7 +478,9 @@ Hindari:
 
 # 17. Transaction History Design
 
-Transaction history harus:
+Halaman Riwayat menggunakan **dua tab** — Pemasukan dan Pengeluaran — berupa segmented control di bagian atas. Tab tidak membutuhkan URL khusus; cukup state lokal.
+
+Tab Pemasukan (transaksi) harus:
 
 - mudah discan
 - mudah membuka detail

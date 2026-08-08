@@ -224,14 +224,14 @@ Setelah checkout:
 
 ---
 
-### 5. Transaction History
+### 5. Riwayat Transaksi
 
-User bisa:
+Halaman **Riwayat** memiliki dua tab:
 
-- melihat daftar transaksi
-- melihat detail transaksi
+- **Pemasukan** — daftar transaksi, bisa membuka detail transaksi
+- **Pengeluaran** — daftar pengeluaran, bisa mengubah/hapus
 
-Minimal data:
+Minimal data transaksi:
 
 - tanggal
 - total
@@ -243,9 +243,31 @@ Minimal data:
 
 Dashboard menampilkan:
 
-- total transaksi hari ini
-- total pendapatan hari ini
-- jumlah transaksi
+- pendapatan bersih hari ini (revenue − pengeluaran)
+- jumlah transaksi hari ini
+- pengeluaran hari ini
+- pendapatan mingguan
+- transaksi terakhir
+
+---
+
+### 7. Expense Management
+
+User bisa:
+
+- mencatat pengeluaran
+- mengubah pengeluaran
+- menghapus pengeluaran
+- melihat daftar pengeluaran (di tab Pengeluaran halaman Riwayat)
+
+Field:
+
+- description (wajib)
+- category (opsional)
+- amount (wajib)
+- occurred_at (wajib, default hari ini)
+
+Pengeluaran mengurangi pendapatan bersih di dashboard.
 
 ---
 
@@ -282,6 +304,18 @@ Dashboard
 Dashboard
 → Products
 → Create/Edit/Delete Product
+```
+
+---
+
+## Expense Flow
+
+```text
+Dashboard
+→ Catat Pengeluaran
+→ Isi Form
+→ Simpan
+→ Riwayat (tab Pengeluaran)
 ```
 
 ---
@@ -326,6 +360,26 @@ User dapat mengubah:
 ### Delete Product
 
 Produk dapat dihapus tanpa merusak transaksi lama.
+
+---
+
+## Expense Management
+
+### Create Expense
+
+User dapat mencatat pengeluaran dengan deskripsi, kategori (opsional), nominal, dan tanggal.
+
+### Update Expense
+
+User dapat mengubah deskripsi, kategori, nominal, dan tanggal pengeluaran.
+
+### Delete Expense
+
+User dapat menghapus pengeluaran.
+
+### List Expense
+
+User dapat melihat daftar pengeluaran pada tab Pengeluaran di halaman Riwayat.
 
 ---
 
@@ -411,6 +465,27 @@ Penting:
 - `subtotal`
 
 adalah snapshot saat transaksi terjadi.
+
+---
+
+## expenses
+
+```ts
+{
+	id;
+	user_id;
+	description;
+	category?; // opsional
+	amount;
+	occurred_at;
+	created_at;
+}
+```
+
+Penting:
+
+- `user_id` mengacu ke `auth.users`
+- RLS aktif — setiap user hanya bisa akses pengeluarannya sendiri
 
 ---
 
@@ -584,6 +659,7 @@ Urutan prioritas development:
 4. Checkout flow
 5. Transaction history
 6. Dashboard
+7. Expense management
 
 Karena:
 
@@ -600,6 +676,7 @@ MVP dianggap selesai jika:
 - user bisa checkout
 - transaksi tersimpan aman
 - histori transaksi bisa dilihat
+- pengeluaran bisa dicatat, diubah, dan dihapus
 - mobile UX nyaman dipakai
 
 ---
