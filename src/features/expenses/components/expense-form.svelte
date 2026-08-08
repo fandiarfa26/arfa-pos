@@ -52,7 +52,12 @@
 	}}
 	class="space-y-4"
 >
-	<InputWrapper label="Deskripsi" id="description" isRequired error={form?.fieldErrors?.description}>
+	<InputWrapper
+		label="Deskripsi"
+		id="description"
+		isRequired
+		error={form?.fieldErrors?.description}
+	>
 		<Input
 			id="description"
 			type="text"
