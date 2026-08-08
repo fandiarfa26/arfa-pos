@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
-	import { resolve } from '$app/paths';
 	import { Button } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { handleFormToast } from '$lib/utils/handle-form-toast';
@@ -32,10 +30,6 @@
 					await update();
 
 					handleFormToast(result);
-
-					if (result.type === 'success') {
-						goto(resolve('/expenses'));
-					}
 				};
 			}}
 			class="space-y-6"

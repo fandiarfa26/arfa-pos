@@ -46,7 +46,7 @@
 			isSubmitting = false;
 
 			if (result.type === 'success') {
-				goto(resolve('/expenses'));
+				goto(resolve('/transactions'), { state: { tab: 'pengeluaran' } });
 			}
 		};
 	}}

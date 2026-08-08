@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { WalletIcon } from '@lucide/svelte';
 	import type { Expense } from '../types/expense';
-	import ExpenseAddButton from './expense-add-button.svelte';
 	import ExpenseCard from './expense-card.svelte';
 
 	type Props = {
@@ -10,11 +9,6 @@
 
 	const { expenses }: Props = $props();
 </script>
-
-<div class="flex items-center justify-between">
-	<h1 class="text-label-bold">Pengeluaran</h1>
-	<ExpenseAddButton />
-</div>
 
 {#if expenses.length === 0}
 	<div class="my-6 flex flex-col items-center justify-center gap-2 p-4">

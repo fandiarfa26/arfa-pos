@@ -44,29 +44,32 @@
 	</h1>
 
 	{#if loading}
-		<div class="grid grid-cols-2 gap-4">
-			<DashboardStatsCard label="Pendapatan Hari Ini" value="" loading={true} />
-			<DashboardStatsCard label="Transaksi Hari Ini" value="" loading={true} />
+		<div class="space-y-4">
+			<DashboardStatsCard label="Pendapatan Bersih" value="" loading={true} />
+			<div class="grid grid-cols-2 gap-4">
+				<DashboardStatsCard label="Transaksi Hari Ini" value="" loading={true} />
+				<DashboardStatsCard label="Pengeluaran Hari Ini" value="" loading={true} />
+			</div>
 		</div>
 	{:else}
-		<div class="grid grid-cols-2 gap-4">
+		<div class="space-y-4">
 			<DashboardStatsCard label="Pendapatan Bersih" value={formatCurrency(data.summary.netRevenue)}>
 				<DollarSignIcon size={24} aria-hidden="true" />
 			</DashboardStatsCard>
 
-			<DashboardStatsCard label="Transaksi Hari Ini" value={String(data.summary.todayCount)}>
-				<ReceiptIcon size={24} aria-hidden="true" />
-			</DashboardStatsCard>
-		</div>
+			<div class="grid grid-cols-2 gap-4">
+				<DashboardStatsCard label="Transaksi Hari Ini" value={String(data.summary.todayCount)}>
+					<ReceiptIcon size={24} aria-hidden="true" />
+				</DashboardStatsCard>
 
-		<a href={resolve('/expenses')} class="block">
-			<DashboardStatsCard
-				label="Pengeluaran Hari Ini"
-				value={formatCurrency(data.summary.todayExpenses)}
-			>
-				<WalletIcon size={24} aria-hidden="true" />
-			</DashboardStatsCard>
-		</a>
+				<DashboardStatsCard
+					label="Pengeluaran Hari Ini"
+					value={formatCurrency(data.summary.todayExpenses)}
+				>
+					<WalletIcon size={24} aria-hidden="true" />
+				</DashboardStatsCard>
+			</div>
+		</div>
 
 		{#if isEmpty}
 			<div class="my-4 flex flex-col items-center justify-center gap-3">
