@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { PencilIcon, TrashIcon } from '@lucide/svelte';
@@ -30,7 +31,7 @@
 	</Card.Content>
 	<Card.Footer class="pt-0">
 		<div class="flex w-full items-center justify-end gap-1">
-			<a href={`/expenses/${expense.id}`} class="-m-2 inline-flex p-2">
+			<a href={resolve(`/expenses/${expense.id}`)} class="-m-2 inline-flex p-2">
 				<Button variant="ghost" size="sm" class="px-2 text-primary">
 					<PencilIcon class="size-3.5" /> Ubah
 				</Button>
