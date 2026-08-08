@@ -7,6 +7,8 @@ export interface DailyRevenue {
 
 export interface DashboardSummary {
 	todayRevenue: number;
+	todayExpenses: number;
+	netRevenue: number;
 	todayCount: number;
 	recentTransactions: Transaction[];
 	weeklyRevenue: DailyRevenue[];

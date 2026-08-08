@@ -17,6 +17,16 @@ export async function load({ locals }) {
 		throw error(500, 'Gagal memuat data dashboard. Silahkan coba lagi.');
 	}
 
+	const { data: todayExpensesData, error: todayExpensesError } = await locals.supabase
+		.from('expenses')
+		.select('amount')
+		.gte('occurred_at', today.toISOString())
+		.eq('user_id', userId);
+
+	if (todayExpensesError) {
+		throw error(500, 'Gagal memuat data dashboard. Silahkan coba lagi.');
+	}
+
 	const { data: recentData, error: recentError } = await locals.supabase
 		.from('transactions')
 		.select('id, total, amount_paid, created_at')
@@ -66,8 +76,13 @@ export async function load({ locals }) {
 		created_at: tx.created_at
 	}));
 
+	const todayRevenue = (todayData ?? []).reduce((sum, tx) => sum + tx.total, 0);
+	const todayExpenses = (todayExpensesData ?? []).reduce((sum, expense) => sum + expense.amount, 0);
+
 	const summary: DashboardSummary = {
-		todayRevenue: (todayData ?? []).reduce((sum, tx) => sum + tx.total, 0),
+		todayRevenue,
+		todayExpenses,
+		netRevenue: todayRevenue - todayExpenses,
 		todayCount: todayData?.length ?? 0,
 		recentTransactions,
 		weeklyRevenue,

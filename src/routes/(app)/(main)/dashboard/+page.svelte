@@ -7,7 +7,8 @@
 		PackageIcon,
 		ReceiptIcon,
 		ShoppingCartIcon,
-		ChevronRightIcon
+		ChevronRightIcon,
+		WalletIcon
 	} from '@lucide/svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
@@ -19,7 +20,11 @@
 	let { data }: { data: PageData } = $props();
 
 	let loading = $state(false);
-	let isEmpty = $derived(data.summary.todayCount === 0 && data.summary.todayRevenue === 0);
+	let isEmpty = $derived(
+		data.summary.todayCount === 0 &&
+			data.summary.todayRevenue === 0 &&
+			data.summary.todayExpenses === 0
+	);
 
 	onNavigate(() => {
 		loading = true;
@@ -43,20 +48,9 @@
 			<DashboardStatsCard label="Pendapatan Hari Ini" value="" loading={true} />
 			<DashboardStatsCard label="Transaksi Hari Ini" value="" loading={true} />
 		</div>
-	{:else if isEmpty}
-		<div class="my-8 flex flex-col items-center justify-center gap-3">
-			<ReceiptIcon size={48} class="text-muted-foreground" aria-hidden="true" />
-			<p class="text-body-sm text-muted-foreground">Belum ada transaksi hari ini.</p>
-			<p class="text-body-sm text-muted-foreground">
-				Mulai transaksi baru atau tambahkan produk terlebih dahulu.
-			</p>
-		</div>
 	{:else}
 		<div class="grid grid-cols-2 gap-4">
-			<DashboardStatsCard
-				label="Pendapatan Hari Ini"
-				value={formatCurrency(data.summary.todayRevenue)}
-			>
+			<DashboardStatsCard label="Pendapatan Bersih" value={formatCurrency(data.summary.netRevenue)}>
 				<DollarSignIcon size={24} aria-hidden="true" />
 			</DashboardStatsCard>
 
@@ -64,6 +58,25 @@
 				<ReceiptIcon size={24} aria-hidden="true" />
 			</DashboardStatsCard>
 		</div>
+
+		<a href={resolve('/expenses')} class="block">
+			<DashboardStatsCard
+				label="Pengeluaran Hari Ini"
+				value={formatCurrency(data.summary.todayExpenses)}
+			>
+				<WalletIcon size={24} aria-hidden="true" />
+			</DashboardStatsCard>
+		</a>
+
+		{#if isEmpty}
+			<div class="my-4 flex flex-col items-center justify-center gap-3">
+				<ReceiptIcon size={48} class="text-muted-foreground" aria-hidden="true" />
+				<p class="text-body-sm text-muted-foreground">Belum ada transaksi hari ini.</p>
+				<p class="text-body-sm text-muted-foreground">
+					Mulai transaksi baru atau tambahkan produk terlebih dahulu.
+				</p>
+			</div>
+		{/if}
 	{/if}
 
 	<div class="flex flex-col gap-3">
@@ -79,6 +92,12 @@
 				Kelola Produk
 			</Button>
 		</a>
+		<a href={resolve('/expenses/add')} class="w-full">
+			<Button variant="outline" class="w-full" size="lg">
+				<WalletIcon aria-hidden="true" />
+				Catat Pengeluaran
+			</Button>
+		</a>
 	</div>
 
 	{#if !loading}
@@ -88,7 +107,7 @@
 		/>
 	{/if}
 
-	{#if !loading && !isEmpty && data.summary.recentTransactions.length > 0}
+	{#if !loading && data.summary.recentTransactions.length > 0}
 		<section class="space-y-3">
 			<div class="flex items-center justify-between">
 				<h2 class="text-label-bold">Transaksi Terakhir</h2>
