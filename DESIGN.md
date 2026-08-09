@@ -451,7 +451,7 @@ Dashboard:
 
 Fokus:
 
-- pendapatan bersih hari ini (nominal terbesar, paling atas)
+- pendapatan bersih keseluruhan (nominal terbesar, paling atas)
 - jumlah transaksi dan pengeluaran hari ini (sejajar, ukuran seimbang)
 - grafik pendapatan mingguan
 - transaksi terakhir

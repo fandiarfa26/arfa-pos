@@ -39,23 +39,34 @@ export async function load({ locals }) {
 		throw error(500, 'Gagal memuat data dashboard. Silahkan coba lagi.');
 	}
 
-	const sevenDaysAgo = new Date(today);
-	sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
-
-	const { data: weekData, error: weekError } = await locals.supabase
+	const { data: allTransactions, error: allTransactionsError } = await locals.supabase
 		.from('transactions')
 		.select('total, created_at')
-		.gte('created_at', sevenDaysAgo.toISOString())
 		.eq('user_id', userId);
 
-	if (weekError) {
+	if (allTransactionsError) {
+		throw error(500, 'Gagal memuat data dashboard. Silahkan coba lagi.');
+	}
+
+	const { data: allExpenses, error: allExpensesError } = await locals.supabase
+		.from('expenses')
+		.select('amount, occurred_at')
+		.eq('user_id', userId);
+
+	if (allExpensesError) {
 		throw error(500, 'Gagal memuat data dashboard. Silahkan coba lagi.');
 	}
 
 	const revenueByDate = new Map<string, number>();
-	for (const tx of weekData ?? []) {
+	for (const tx of allTransactions ?? []) {
 		const dateStr = tx.created_at.slice(0, 10);
 		revenueByDate.set(dateStr, (revenueByDate.get(dateStr) ?? 0) + tx.total);
+	}
+
+	const expenseByDate = new Map<string, number>();
+	for (const expense of allExpenses ?? []) {
+		const dateStr = expense.occurred_at.slice(0, 10);
+		expenseByDate.set(dateStr, (expenseByDate.get(dateStr) ?? 0) + expense.amount);
 	}
 
 	const weeklyRevenue: DailyRevenue[] = [];
@@ -64,9 +75,9 @@ export async function load({ locals }) {
 		const date = new Date(today);
 		date.setDate(date.getDate() - i);
 		const dateStr = date.toISOString().slice(0, 10);
-		const revenue = revenueByDate.get(dateStr) ?? 0;
-		weeklyRevenue.push({ date: dateStr, revenue });
-		weeklyTotal += revenue;
+		const net = (revenueByDate.get(dateStr) ?? 0) - (expenseByDate.get(dateStr) ?? 0);
+		weeklyRevenue.push({ date: dateStr, net });
+		weeklyTotal += net;
 	}
 
 	const recentTransactions: Transaction[] = (recentData ?? []).map((tx) => ({
@@ -79,10 +90,13 @@ export async function load({ locals }) {
 	const todayRevenue = (todayData ?? []).reduce((sum, tx) => sum + tx.total, 0);
 	const todayExpenses = (todayExpensesData ?? []).reduce((sum, expense) => sum + expense.amount, 0);
 
+	const totalRevenue = (allTransactions ?? []).reduce((sum, tx) => sum + tx.total, 0);
+	const totalExpenses = (allExpenses ?? []).reduce((sum, expense) => sum + expense.amount, 0);
+
 	const summary: DashboardSummary = {
 		todayRevenue,
 		todayExpenses,
-		netRevenue: todayRevenue - todayExpenses,
+		netRevenue: totalRevenue - totalExpenses,
 		todayCount: todayData?.length ?? 0,
 		recentTransactions,
 		weeklyRevenue,

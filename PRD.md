@@ -243,10 +243,10 @@ Minimal data transaksi:
 
 Dashboard menampilkan:
 
-- pendapatan bersih hari ini (revenue − pengeluaran)
+- pendapatan bersih (seluruh pendapatan − seluruh pengeluaran)
 - jumlah transaksi hari ini
 - pengeluaran hari ini
-- pendapatan mingguan
+- pendapatan mingguan (pendapatan bersih per hari)
 - transaksi terakhir
 
 ---
