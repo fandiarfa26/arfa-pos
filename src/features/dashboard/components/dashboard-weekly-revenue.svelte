@@ -29,8 +29,7 @@
 	<Card.Content class="space-y-3">
 		{#each weeklyRevenue as day, i (day.date)}
 			{@const isToday = day.date === todayStr}
-			{@const barWidth =
-				maxRevenue > 0 ? Math.max(0, (day.net / maxRevenue) * 100) : 0}
+			{@const barWidth = maxRevenue > 0 ? Math.max(0, (day.net / maxRevenue) * 100) : 0}
 			{@const prevRevenue = i < weeklyRevenue.length - 1 ? weeklyRevenue[i + 1].net : null}
 			{@const up = prevRevenue !== null && day.net > prevRevenue}
 			{@const down = prevRevenue !== null && day.net < prevRevenue}
