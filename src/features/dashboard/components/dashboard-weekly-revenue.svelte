@@ -11,7 +11,7 @@
 
 	let { weeklyRevenue, weeklyTotal }: Props = $props();
 
-	let maxRevenue = $derived(Math.max(...weeklyRevenue.map((d) => d.revenue), 1));
+	let maxRevenue = $derived(Math.max(...weeklyRevenue.map((d) => d.net), 1));
 	let todayStr = $derived(new Date().toISOString().slice(0, 10));
 
 	function label(dateStr: string): string {
@@ -24,15 +24,16 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title class="text-label-bold">Pendapatan 7 Hari</Card.Title>
+		<Card.Title class="text-label-bold">Pendapatan Bersih 7 Hari</Card.Title>
 	</Card.Header>
 	<Card.Content class="space-y-3">
 		{#each weeklyRevenue as day, i (day.date)}
 			{@const isToday = day.date === todayStr}
-			{@const barWidth = maxRevenue > 0 ? (day.revenue / maxRevenue) * 100 : 0}
-			{@const prevRevenue = i < weeklyRevenue.length - 1 ? weeklyRevenue[i + 1].revenue : null}
-			{@const up = prevRevenue !== null && day.revenue > prevRevenue}
-			{@const down = prevRevenue !== null && day.revenue < prevRevenue}
+			{@const barWidth =
+				maxRevenue > 0 ? Math.max(0, (day.net / maxRevenue) * 100) : 0}
+			{@const prevRevenue = i < weeklyRevenue.length - 1 ? weeklyRevenue[i + 1].net : null}
+			{@const up = prevRevenue !== null && day.net > prevRevenue}
+			{@const down = prevRevenue !== null && day.net < prevRevenue}
 			<div class="space-y-1">
 				<div class="flex items-center justify-between">
 					<span
@@ -52,7 +53,7 @@
 								? 'font-semibold text-foreground'
 								: 'text-foreground'}"
 						>
-							{formatCurrency(day.revenue)}
+							{formatCurrency(day.net)}
 						</span>
 					</div>
 				</div>
