@@ -2,7 +2,7 @@ import type { Transaction } from '$features/transactions/types/transaction';
 
 export interface DailyRevenue {
 	date: string;
-	revenue: number;
+	net: number;
 }
 
 export interface DashboardSummary {
