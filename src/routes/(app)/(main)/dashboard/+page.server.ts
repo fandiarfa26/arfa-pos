@@ -75,8 +75,9 @@ export async function load({ locals }) {
 		const date = new Date(today);
 		date.setDate(date.getDate() - i);
 		const dateStr = date.toISOString().slice(0, 10);
-		const net = (revenueByDate.get(dateStr) ?? 0) - (expenseByDate.get(dateStr) ?? 0);
-		weeklyRevenue.push({ date: dateStr, net });
+		const revenue = revenueByDate.get(dateStr) ?? 0;
+		const net = revenue - (expenseByDate.get(dateStr) ?? 0);
+		weeklyRevenue.push({ date: dateStr, net, revenue });
 		weeklyTotal += net;
 	}
 
@@ -96,6 +97,7 @@ export async function load({ locals }) {
 	const summary: DashboardSummary = {
 		todayRevenue,
 		todayExpenses,
+		totalRevenue,
 		netRevenue: totalRevenue - totalExpenses,
 		todayCount: todayData?.length ?? 0,
 		recentTransactions,
