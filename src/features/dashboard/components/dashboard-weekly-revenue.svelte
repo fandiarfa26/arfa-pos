@@ -7,11 +7,15 @@
 	interface Props {
 		weeklyRevenue: DailyRevenue[];
 		weeklyTotal: number;
+		showGross?: boolean;
 	}
 
-	let { weeklyRevenue, weeklyTotal }: Props = $props();
+	let { weeklyRevenue, weeklyTotal, showGross = false }: Props = $props();
 
-	let maxRevenue = $derived(Math.max(...weeklyRevenue.map((d) => d.net), 1));
+	let maxRevenue = $derived(
+		Math.max(...weeklyRevenue.map((d) => (showGross ? d.revenue : d.net)), 1)
+	);
+	let grossTotal = $derived(weeklyRevenue.reduce((sum, d) => sum + d.revenue, 0));
 	let todayStr = $derived(new Date().toISOString().slice(0, 10));
 
 	function label(dateStr: string): string {
@@ -24,15 +28,23 @@
 
 <Card.Root>
 	<Card.Header>
-		<Card.Title class="text-label-bold">Pendapatan Bersih 7 Hari</Card.Title>
+		<Card.Title class="text-label-bold"
+			>{showGross ? 'Pendapatan 7 Hari' : 'Pendapatan Bersih 7 Hari'}</Card.Title
+		>
 	</Card.Header>
 	<Card.Content class="space-y-3">
 		{#each weeklyRevenue as day, i (day.date)}
 			{@const isToday = day.date === todayStr}
-			{@const barWidth = maxRevenue > 0 ? Math.max(0, (day.net / maxRevenue) * 100) : 0}
-			{@const prevRevenue = i < weeklyRevenue.length - 1 ? weeklyRevenue[i + 1].net : null}
-			{@const up = prevRevenue !== null && day.net > prevRevenue}
-			{@const down = prevRevenue !== null && day.net < prevRevenue}
+			{@const value = showGross ? day.revenue : day.net}
+			{@const barWidth = maxRevenue > 0 ? Math.max(0, (value / maxRevenue) * 100) : 0}
+			{@const prevValue =
+				i < weeklyRevenue.length - 1
+					? showGross
+						? weeklyRevenue[i + 1].revenue
+						: weeklyRevenue[i + 1].net
+					: null}
+			{@const up = prevValue !== null && value > prevValue}
+			{@const down = prevValue !== null && value < prevValue}
 			<div class="space-y-1">
 				<div class="flex items-center justify-between">
 					<span
@@ -52,7 +64,7 @@
 								? 'font-semibold text-foreground'
 								: 'text-foreground'}"
 						>
-							{formatCurrency(day.net)}
+							{formatCurrency(value)}
 						</span>
 					</div>
 				</div>
@@ -68,7 +80,7 @@
 	<Card.Footer>
 		<div class="flex w-full items-baseline justify-between">
 			<span class="text-body-md font-semibold">Total 7 Hari</span>
-			<span class="text-price-display">{formatCurrency(weeklyTotal)}</span>
+			<span class="text-price-display">{formatCurrency(showGross ? grossTotal : weeklyTotal)}</span>
 		</div>
 	</Card.Footer>
 </Card.Root>
