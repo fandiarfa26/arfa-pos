@@ -230,6 +230,7 @@ Halaman **Riwayat** memiliki dua tab:
 
 - **Pemasukan** — daftar transaksi, bisa membuka detail transaksi
 - **Pengeluaran** — daftar pengeluaran, bisa mengubah/hapus
+- total pemasukan dan total pengeluaran ditampilkan di atas daftar masing-masing tab
 
 Minimal data transaksi:
 
@@ -244,6 +245,7 @@ Minimal data transaksi:
 Dashboard menampilkan:
 
 - pendapatan bersih (seluruh pendapatan − seluruh pengeluaran)
+- toggle untuk menampilkan total pendapatan dengan atau tanpa dikurangi pengeluaran (hanya memengaruhi card Pendapatan Bersih dan Pendapatan 7 Hari)
 - jumlah transaksi hari ini
 - pengeluaran hari ini
 - pendapatan mingguan (pendapatan bersih per hari)

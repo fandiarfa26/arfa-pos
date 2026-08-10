@@ -452,6 +452,7 @@ Dashboard:
 Fokus:
 
 - pendapatan bersih keseluruhan (nominal terbesar, paling atas)
+- toggle pendapatan bersih/kotor (hanya memengaruhi card Pendapatan Bersih dan grafik mingguan)
 - jumlah transaksi dan pengeluaran hari ini (sejajar, ukuran seimbang)
 - grafik pendapatan mingguan
 - transaksi terakhir
@@ -479,6 +480,8 @@ Hindari:
 # 17. Transaction History Design
 
 Halaman Riwayat menggunakan **dua tab** — Pemasukan dan Pengeluaran — berupa segmented control di bagian atas. Tab tidak membutuhkan URL khusus; cukup state lokal.
+
+Di bawah tab dan di atas daftar, tampilkan ringkasan total untuk tab aktif (Total Pemasukan / Total Pengeluaran).
 
 Tab Pemasukan (transaksi) harus:
 
