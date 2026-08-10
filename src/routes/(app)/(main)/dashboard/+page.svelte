@@ -115,7 +115,7 @@
 		<DashboardWeeklyRevenue
 			weeklyRevenue={data.summary.weeklyRevenue}
 			weeklyTotal={data.summary.weeklyTotal}
-			showGross={showGross}
+			{showGross}
 		/>
 	{/if}
 

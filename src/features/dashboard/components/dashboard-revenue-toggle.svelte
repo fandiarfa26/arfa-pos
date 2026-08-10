@@ -15,7 +15,9 @@
 >
 	<span class="text-body-sm font-medium text-foreground">Tanpa dikurangi pengeluaran</span>
 	<span
-		class="relative h-6 w-11 shrink-0 rounded-full transition-colors {checked ? 'bg-primary' : 'bg-muted'}"
+		class="relative h-6 w-11 shrink-0 rounded-full transition-colors {checked
+			? 'bg-primary'
+			: 'bg-muted'}"
 		aria-hidden="true"
 	>
 		<span
