@@ -12,6 +12,7 @@
 	} from '@lucide/svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
+	import DashboardRevenueToggle from '$features/dashboard/components/dashboard-revenue-toggle.svelte';
 	import DashboardStatsCard from '$features/dashboard/components/dashboard-stats-card.svelte';
 	import DashboardWeeklyRevenue from '$features/dashboard/components/dashboard-weekly-revenue.svelte';
 	import { formatCurrency } from '$lib/utils/currency';
@@ -25,6 +26,8 @@
 			data.summary.todayRevenue === 0 &&
 			data.summary.todayExpenses === 0
 	);
+
+	let showGross = $state(false);
 
 	onNavigate(() => {
 		loading = true;
@@ -53,7 +56,12 @@
 		</div>
 	{:else}
 		<div class="space-y-4">
-			<DashboardStatsCard label="Pendapatan Bersih" value={formatCurrency(data.summary.netRevenue)}>
+			<DashboardRevenueToggle bind:checked={showGross} />
+
+			<DashboardStatsCard
+				label={showGross ? 'Total Pendapatan' : 'Pendapatan Bersih'}
+				value={formatCurrency(showGross ? data.summary.totalRevenue : data.summary.netRevenue)}
+			>
 				<DollarSignIcon size={24} aria-hidden="true" />
 			</DashboardStatsCard>
 
@@ -107,6 +115,7 @@
 		<DashboardWeeklyRevenue
 			weeklyRevenue={data.summary.weeklyRevenue}
 			weeklyTotal={data.summary.weeklyTotal}
+			showGross={showGross}
 		/>
 	{/if}
 
