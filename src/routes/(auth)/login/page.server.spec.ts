@@ -30,7 +30,9 @@ describe('login action', () => {
 
 		if ('status' in result) {
 			expect(result.status).toBe(400);
-			expect(result.data.message).toBe('Email belum diverifikasi. Silakan cek email Anda terlebih dahulu.');
+			expect(result.data.message).toBe(
+				'Email belum diverifikasi. Silakan cek email Anda terlebih dahulu.'
+			);
 		} else {
 			expect.fail('expected an action failure');
 		}
