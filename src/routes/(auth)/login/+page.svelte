@@ -8,6 +8,7 @@
 	import { Store, Mail, Lock, Eye, EyeOff, ArrowRight, CircleAlert } from '@lucide/svelte';
 	import { enhance } from '$app/forms';
 	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
 
 	let email = $state('');
 	let password = $state('');
@@ -40,6 +41,17 @@
 			>Masuk ke akun kasir ArfaPOS Anda</Card.Description
 		>
 	</Card.Header>
+
+	{#if page.url.searchParams.get('verify') === 'failed'}
+		<Alert.Root variant="destructive" role="alert" class="mb-6">
+			<CircleAlert aria-hidden="true" />
+			<Alert.Title>Tautan Tidak Valid</Alert.Title>
+			<Alert.Description>
+				Tautan verifikasi tidak valid atau sudah kedaluwarsa. Silakan daftar ulang untuk mendapatkan
+				tautan baru.
+			</Alert.Description>
+		</Alert.Root>
+	{/if}
 
 	<Card.Content class="p-0">
 		<form
