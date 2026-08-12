@@ -167,6 +167,8 @@ User bisa:
 
 Autentikasi menggunakan Supabase Auth.
 
+Register memerlukan verifikasi email — akun hanya aktif setelah user mengkonfirmasi emailnya.
+
 ---
 
 ### 2. Product CRUD
@@ -331,7 +333,7 @@ Dashboard
 User dapat:
 
 - membuat akun
-- login otomatis setelah register
+- verifikasi email wajib sebelum akun aktif
 
 ### Login
 

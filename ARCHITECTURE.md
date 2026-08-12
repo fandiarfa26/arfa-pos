@@ -470,6 +470,8 @@ hooks.server.ts (every request):
 (app)/+layout.server.ts (auth guard):
     → if no locals.session → redirect /login
     → else → render children with user data
+
+Register → signUp() → (email confirmation enabled) no session → /register shows "Cek Email Anda" → user clicks /auth/confirm?token_hash=...&type=email → verifyOtp() sets session → redirect /dashboard
 ```
 
 ---
