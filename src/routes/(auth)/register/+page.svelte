@@ -43,128 +43,149 @@
 	</Card.Header>
 
 	<Card.Content class="p-0">
-		<form
-			method="POST"
-			action="?/register"
-			use:enhance={() => {
-				loading = true;
-				return async ({ update }) => {
-					await update();
-					loading = false;
-				};
-			}}
-			class="space-y-6"
-		>
-			<!-- Name Input -->
-			<div class="space-y-2">
-				<Label class="px-1 text-label-caps text-muted-foreground" for="name">NAMA</Label>
-				<div class="group relative">
-					<Store
-						class="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
-						aria-hidden="true"
-					/>
-					<Input
-						class="h-12 w-full rounded-xl border-transparent bg-secondary/10 pr-4 pl-11 text-body-md transition-colors placeholder:text-muted-foreground focus-visible:border-primary-light focus-visible:ring-2"
-						id="name"
-						name="name"
-						type="text"
-						placeholder="Contoh: Toko Berkah"
-						bind:value={name}
-						required
-					/>
+		{#if form?.success}
+			<div class="flex flex-col items-center py-4 text-center">
+				<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+					<Mail class="h-8 w-8 text-primary" aria-hidden="true" />
 				</div>
+				<h2 class="text-headline-md font-bold tracking-tight">Cek Email Anda</h2>
+				<p class="mt-2 text-body-sm text-muted-foreground">
+					Kami telah mengirimkan tautan verifikasi ke email Anda. Silakan klik tautan tersebut untuk
+					mengaktifkan akun, lalu masuk kembali.
+				</p>
+				<Button
+					class="mt-6 flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary text-body-md font-semibold text-primary-foreground shadow-sm transition-[color,background-color,transform] hover:bg-primary-dark active:scale-[0.98]"
+					href={resolve('/login')}
+				>
+					Masuk Sekarang
+				</Button>
 			</div>
-
-			<!-- Email Input -->
-			<div class="space-y-2">
-				<Label class="px-1 text-label-caps text-muted-foreground" for="email">EMAIL</Label>
-				<div class="group relative">
-					<Mail
-						class="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
-						aria-hidden="true"
-					/>
-					<Input
-						class="h-12 w-full rounded-xl border-transparent bg-secondary/10 pr-4 pl-11 text-body-md transition-colors placeholder:text-muted-foreground focus-visible:border-primary-light focus-visible:ring-2"
-						id="email"
-						name="email"
-						type="email"
-						placeholder="nama@toko.com"
-						bind:value={email}
-						required
-					/>
-				</div>
-			</div>
-
-			<!-- Password Input -->
-			<div class="space-y-2">
-				<div class="flex items-end justify-between px-1">
-					<Label class="text-label-caps text-muted-foreground" for="password">PASSWORD</Label>
-				</div>
-				<div class="group relative">
-					<Lock
-						class="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
-						aria-hidden="true"
-					/>
-					<Input
-						class="h-12 w-full rounded-xl border-transparent bg-secondary/10 pr-11 pl-11 text-body-md transition-colors placeholder:text-muted-foreground focus-visible:border-primary-light focus-visible:ring-2"
-						id="password"
-						name="password"
-						type={showPassword ? 'text' : 'password'}
-						placeholder="Minimal 8 karakter"
-						bind:value={password}
-						required
-					/>
-					<button
-						class="absolute top-1/2 right-3.5 -translate-y-1/2 cursor-pointer text-muted-foreground transition-colors hover:text-foreground"
-						onclick={togglePassword}
-						type="button"
-						aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
-						aria-pressed={showPassword}
-					>
-						{#if showPassword}
-							<EyeOff class="size-5" aria-hidden="true" />
-						{:else}
-							<Eye class="size-5" aria-hidden="true" />
-						{/if}
-					</button>
-				</div>
-			</div>
-
-			<!-- Error Message -->
-			{#if form?.message}
-				<Alert.Root variant="destructive" role="alert">
-					<CircleAlert aria-hidden="true" />
-					<Alert.Title>Ups!</Alert.Title>
-					<Alert.Description>
-						{form.message}
-					</Alert.Description>
-				</Alert.Root>
-			{/if}
-
-			<!-- Login Button -->
-			<Button
-				class="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary text-body-md font-semibold text-primary-foreground shadow-sm transition-[color,background-color,transform] hover:bg-primary-dark active:scale-[0.98]"
-				type="submit"
-				disabled={loading}
+		{:else}
+			<form
+				method="POST"
+				action="?/register"
+				use:enhance={() => {
+					loading = true;
+					return async ({ update }) => {
+						await update();
+						loading = false;
+					};
+				}}
+				class="space-y-6"
 			>
-				{#if loading}
-					<Spinner />
-					Memproses...
-				{:else}
-					Daftar
-					<ArrowRight class="ml-1 size-5" aria-hidden="true" />
+				<!-- Name Input -->
+				<div class="space-y-2">
+					<Label class="px-1 text-label-caps text-muted-foreground" for="name">NAMA</Label>
+					<div class="group relative">
+						<Store
+							class="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
+							aria-hidden="true"
+						/>
+						<Input
+							class="h-12 w-full rounded-xl border-transparent bg-secondary/10 pr-4 pl-11 text-body-md transition-colors placeholder:text-muted-foreground focus-visible:border-primary-light focus-visible:ring-2"
+							id="name"
+							name="name"
+							type="text"
+							placeholder="Contoh: Toko Berkah"
+							bind:value={name}
+							required
+						/>
+					</div>
+				</div>
+
+				<!-- Email Input -->
+				<div class="space-y-2">
+					<Label class="px-1 text-label-caps text-muted-foreground" for="email">EMAIL</Label>
+					<div class="group relative">
+						<Mail
+							class="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
+							aria-hidden="true"
+						/>
+						<Input
+							class="h-12 w-full rounded-xl border-transparent bg-secondary/10 pr-4 pl-11 text-body-md transition-colors placeholder:text-muted-foreground focus-visible:border-primary-light focus-visible:ring-2"
+							id="email"
+							name="email"
+							type="email"
+							placeholder="nama@toko.com"
+							bind:value={email}
+							required
+						/>
+					</div>
+				</div>
+
+				<!-- Password Input -->
+				<div class="space-y-2">
+					<div class="flex items-end justify-between px-1">
+						<Label class="text-label-caps text-muted-foreground" for="password">PASSWORD</Label>
+					</div>
+					<div class="group relative">
+						<Lock
+							class="absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
+							aria-hidden="true"
+						/>
+						<Input
+							class="h-12 w-full rounded-xl border-transparent bg-secondary/10 pr-11 pl-11 text-body-md transition-colors placeholder:text-muted-foreground focus-visible:border-primary-light focus-visible:ring-2"
+							id="password"
+							name="password"
+							type={showPassword ? 'text' : 'password'}
+							placeholder="Minimal 8 karakter"
+							bind:value={password}
+							required
+						/>
+						<button
+							class="absolute top-1/2 right-3.5 -translate-y-1/2 cursor-pointer text-muted-foreground transition-colors hover:text-foreground"
+							onclick={togglePassword}
+							type="button"
+							aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+							aria-pressed={showPassword}
+						>
+							{#if showPassword}
+								<EyeOff class="size-5" aria-hidden="true" />
+							{:else}
+								<Eye class="size-5" aria-hidden="true" />
+							{/if}
+						</button>
+					</div>
+				</div>
+
+				<!-- Error Message -->
+				{#if form?.message}
+					<Alert.Root variant="destructive" role="alert">
+						<CircleAlert aria-hidden="true" />
+						<Alert.Title>Ups!</Alert.Title>
+						<Alert.Description>
+							{form.message}
+						</Alert.Description>
+					</Alert.Root>
 				{/if}
-			</Button>
-		</form>
+
+				<!-- Login Button -->
+				<Button
+					class="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary text-body-md font-semibold text-primary-foreground shadow-sm transition-[color,background-color,transform] hover:bg-primary-dark active:scale-[0.98]"
+					type="submit"
+					disabled={loading}
+				>
+					{#if loading}
+						<Spinner />
+						Memproses...
+					{:else}
+						Daftar
+						<ArrowRight class="ml-1 size-5" aria-hidden="true" />
+					{/if}
+				</Button>
+			</form>
+		{/if}
 	</Card.Content>
 
-	<Card.Footer class="mt-6 flex flex-col items-center border-t border-border/20 px-0 pt-6 pb-0">
-		<p class="text-center text-body-sm font-body-sm text-muted-foreground">
-			Sudah punya akun ArfaPOS?
-			<a
-				class="ml-1 font-label-bold font-semibold text-primary hover:underline"
-				href={resolve('/login')}>Masuk Sekarang</a
-			>
-		</p>
-	</Card.Footer>
+	{#if !form?.success}
+		<Card.Footer class="mt-6 flex flex-col items-center border-t border-border/20 px-0 pt-6 pb-0">
+			<p class="text-center text-body-sm font-body-sm text-muted-foreground">
+				Sudah punya akun ArfaPOS?
+				<a
+					class="ml-1 font-label-bold font-semibold text-primary hover:underline"
+					href={resolve('/login')}>Masuk Sekarang</a
+				>
+			</p>
+		</Card.Footer>
+	{/if}
 </Card.Root>
