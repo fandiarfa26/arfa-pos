@@ -20,6 +20,11 @@ export const actions = {
 		const { error } = await locals.supabase.auth.signInWithPassword({ email, password });
 
 		if (error) {
+			if (error.code === 'email_not_confirmed') {
+				return fail(400, {
+					message: 'Email belum diverifikasi. Silakan cek email Anda terlebih dahulu.'
+				});
+			}
 			return fail(400, {
 				message: 'Email atau password salah!'
 			});
