@@ -30,6 +30,20 @@ describe('auth/confirm GET', () => {
 		);
 	});
 
+	it('redirects to /dashboard when next is an absolute URL', async () => {
+		const verifyOtp = vi.fn().mockResolvedValue({ error: null });
+		const event = makeEvent({ verifyOtp });
+		event.url = new URL(
+			'https://app.arfa.com/auth/confirm?token_hash=abc&type=email&next=https%3A%2F%2Fapp.arfa.com'
+		);
+
+		await expect(GET(event)).rejects.toMatchObject({ status: 303 });
+		expect(verifyOtp).toHaveBeenCalledWith({ token_hash: 'abc', type: 'email' });
+		await expect(GET(event)).rejects.toSatisfy(
+			(err) => locationPathname((err as { location: unknown }).location) === '/dashboard'
+		);
+	});
+
 	it('redirects to /dashboard when next is empty', async () => {
 		const verifyOtp = vi.fn().mockResolvedValue({ error: null });
 		const event = makeEvent({ verifyOtp });

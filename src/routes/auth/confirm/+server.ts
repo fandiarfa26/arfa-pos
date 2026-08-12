@@ -4,10 +4,10 @@ import { redirect } from '@sveltejs/kit';
 export const GET = async ({ url, locals: { supabase } }: { url: URL; locals: App.Locals }) => {
 	const token_hash = url.searchParams.get('token_hash') as string;
 	const type = url.searchParams.get('type') as EmailOtpType | null;
-	const next = url.searchParams.get('next') || '/dashboard';
+	const next = url.searchParams.get('next');
 
 	const redirectTo = new URL(url);
-	redirectTo.pathname = next;
+	redirectTo.pathname = next?.startsWith('/') ? next : '/dashboard';
 	redirectTo.searchParams.delete('token_hash');
 	redirectTo.searchParams.delete('type');
 
