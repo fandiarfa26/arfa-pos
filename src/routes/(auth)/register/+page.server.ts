@@ -18,7 +18,7 @@ export const actions = {
 
 		const { name, email, password } = parsed.data;
 
-		const { error } = await locals.supabase.auth.signUp({
+		const { data, error } = await locals.supabase.auth.signUp({
 			email,
 			password,
 			options: { data: { name } }
@@ -30,6 +30,10 @@ export const actions = {
 			});
 		}
 
-		throw redirect(303, '/dashboard');
+		if (data.session) {
+			throw redirect(303, '/dashboard');
+		}
+
+		return { success: true };
 	}
 };
